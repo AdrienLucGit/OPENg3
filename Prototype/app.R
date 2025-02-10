@@ -12,7 +12,7 @@ ui <- fluidPage(
   
   tabsetPanel(
     
-    # Onglet 1 : Accueil avec mode d'emploi Administrateur
+    # Onglet 1 : Accueil
     tabPanel("Accueil", 
              h2("Bienvenue dans l'application Quiz !"),
              p("Notre application Buzzer est une solution simple et interactive conçue pour faciliter et dynamiser vos jeux, quiz et compétitions. Elle permet aux utilisateurs d’appuyer sur un bouton virtuel pour déclencher un signal sonore, indiquant ainsi qui a répondu."),
@@ -27,30 +27,20 @@ ui <- fluidPage(
                tags$li("Passer à la question suivante : Vous pouvez faire défiler les questions en cliquant sur 'Question suivante'."),
                tags$li("Réinitialiser les buzzers : Si nécessaire, vous pouvez réinitialiser l'ordre des buzzers."),
                tags$li("Voir l'ordre des buzzers : L'ordre d'arrivée des joueurs au buzzer est affiché après chaque question."),
-               tags$li("Bloquer ou exclure les buzzer : Si nécessaire, vous pouvez bloquer ou exclure un buzzer.")
+               tags$li("Bloquer ou exclure les buzzer : Si nécessaire, vous pouvez bloquer ou exclure un buzzer."),
              ),
              
              #Mode d'emploi Joueur 
-      
-             h2("Mode d'emploi - Joueurs"),
+             h3("Mode d'emploi - Joueurs"),
              p("L'interface du mode joueur comprend une zone de texte pour entrer son nom, Une icône s'ENREGISTRER & Un bouton BUZZER" ),
-             h3("ETAPES"),
+             h4("ETAPES"),
              tags$ul(
                tags$li("Inscription : Le joueur entre son nom dans la zone de texte et clique sur l’icône S’enregistrer pour valider sa participation. Sans cette étape, il ne pourra pas utiliser le buzzer."),
                tags$li("Utilisation du buzzer : Une fois la question posée par le maître du jeu, le joueur peut appuyer sur le buzzer s’il connaît la réponse."),
                tags$li("Priorité au plus rapide : Le premier joueur à appuyer est invité à répondre."),
                tags$li("Réinitialisation : Seul le maître du jeu peut réinitialiser le buzzer.")
-               
+               )
              ),
-             
-             ),
-             
-             br(),
-             
-          
-             
-             actionButton("go_to_quiz", "Accéder au Quiz et Buzzer", class = "btn-primary")
-    ),
     
     # Onglet 2 : Quiz et Buzzer
     tabPanel("Buzzer", 
@@ -86,7 +76,7 @@ ui <- fluidPage(
              p("Cette application Shiny a été développée pour gérer un système de quiz avec buzzer multijoueur.")
     )
   )
-
+)
 
 # Server
 server <- function(input, output, session) {
@@ -155,11 +145,7 @@ server <- function(input, output, session) {
   observeEvent(input$reset_buzzers, {
     buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
   })
-  
-  # Navigation vers l'onglet Quiz et Buzzer
-  observeEvent(input$go_to_quiz, {
-    updateTabsetPanel(session, "tabs", selected = "Buzzer")
-  })
 }
+
 
 shinyApp(ui = ui, server = server)
