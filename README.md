@@ -31,4 +31,4 @@ Amélioration possible avec : * compteur de points, * Vrai/faux
 3 :
 
     L’hôte peut distribuer les points (PS: pas un truc tout petit sinon c’est très chiant)
-    Possibilité pour les joueurs d’enregistrer une voix pour le buzzer
+    Possibilité pour les joueurs d’enregistrer une voix pour le buzzer 
