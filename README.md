@@ -1,4 +1,4 @@
-# OPENg3
+# BUZZER 
 
 
 ## Application OPEN du sujet 3 
