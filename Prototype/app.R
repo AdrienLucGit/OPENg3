@@ -18,7 +18,7 @@ ui <- fluidPage(
              p("Cette application Shiny permet de gérer un quiz multijoueur avec un système de buzzer."),
              
              # Mode d'emploi Administrateur
-             h3("Mode d'emploi Administrateur"),
+             h3("Instructions pour Administrateur"),
              p("En tant qu'administrateur, vous avez plusieurs fonctionnalités pour gérer le quiz et les joueurs :"),
              tags$ul(
                tags$li("Ajouter des questions : Vous pouvez ajouter de nouvelles questions à tout moment."),
