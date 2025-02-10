@@ -1,4 +1,6 @@
 library(shiny)
+library("writexl")
+library("readxl")
 
 # Reactive values for questions and buzzers
 questions <- reactiveVal(list())  # Store quiz questions
@@ -15,7 +17,9 @@ ui <- fluidPage(
     # Onglet 1 : Accueil
     tabPanel("Accueil", 
              h2("Bienvenue !"),
-             p("Ceci est une application Shiny avec plusieurs onglets.")
+             p("Ceci est une application Shiny avec plusieurs onglets."),
+             # Bouton de téléchargement 
+             downloadButton("download_excel", "Télécharger un questionnaire vierge")
     ),
     
     # Onglet 2 : Quiz et Buzzer
@@ -31,7 +35,12 @@ ui <- fluidPage(
                  br(),
                  h3("Ordre des buzz :"),
                  tableOutput("buzz_order"),
-                 actionButton("reset_buzzers", "Réinitialiser les buzzers")
+                 actionButton("reset_buzzers", "Réinitialiser les buzzers"),
+                 br(), hr(),
+                 
+                 # Téléversement du fichier Excel
+                 fileInput("file_upload", "Téléverser un questionnaire", accept = c(".xlsx")),
+                 actionButton("load_questions", "Charger les questions")
                ),
                mainPanel(
                  h3("Administration"),
@@ -65,9 +74,30 @@ server <- function(input, output, session) {
     }
   })
   
+  # Charger un questionnaire depuis un fichier Excel
+  observeEvent(input$load_questions, {
+    req(input$file_upload)  # Vérifie que le fichier a bien été téléversé
+    
+    df <- read_xlsx(input$file_upload$datapath)  # Lecture du fichier
+    
+    # Vérifier que la colonne "Questions" existe
+    if (!"Questions" %in% colnames(df)) {
+      showNotification("Erreur : le fichier doit contenir une colonne 'Questions'.", type = "error")
+      return(NULL)
+    }
+    
+    # Mise à jour des questions avec celles du fichier
+    questions(as.list(df$Questions))  # Stocke les questions sous forme de liste
+  })
+  
   # Afficher les questions enregistrées
   output$question_list <- renderTable({
-    data.frame(Questions = questions())
+    q_list <- unlist(questions())  # Convertit en vecteur pour éviter les erreurs
+    if (length(q_list) > 0) {
+      data.frame(Numéro = seq_along(q_list), Questions = q_list)
+    } else {
+      data.frame(Numéro = integer(), Questions = character())  # Évite une erreur si vide
+    }
   })
   
   # Démarrer le quiz
@@ -121,7 +151,19 @@ server <- function(input, output, session) {
   observeEvent(input$reset_buzzers, {
     buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
   })
+  
+  # Excel prérempli
+  output$download_excel <- downloadHandler(
+    filename = function() {
+      "questionnaires.xlsx"
+    },
+    content = function(file) {
+      # Création d'un dataframe d'exemple
+      df <- data.frame(Questions = "", stringsAsFactors = FALSE)
+      # Sauvegarde en fichier Excel
+      writexl::write_xlsx(df, file)
+    }
+  )
 }
-
 
 shinyApp(ui = ui, server = server)
