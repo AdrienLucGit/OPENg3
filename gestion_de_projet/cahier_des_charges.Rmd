@@ -56,7 +56,7 @@ Possibilité de choisir le nom et la couleur, lors de la création de l'équipe.
 Possibilité pour les participants de changer le bruit du buzzer.
 
 
-## l'hôte : game master 
+## l'hôte : le game master 
 
 ### Questions
 L'hôte a la possibilité d'ajouter les questions en amont du jeu.
