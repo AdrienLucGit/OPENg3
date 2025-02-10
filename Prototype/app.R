@@ -1,35 +1,29 @@
 library(shiny)
 
-# Variables globales pour partager les données entre sessions
-questions <- reactiveVal(list())
-current_question_index <- reactiveVal(0)
-buzz_list <- reactiveVal(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
-players <- reactiveVal(data.frame(name = character(), stringsAsFactors = FALSE))
+# Variables globales pour assurer la synchronisation entre l'admin et les joueurs
+global_questions <- reactiveVal(list())  # Liste des questions globales
+global_current_question <- reactiveVal("")  # Question actuelle
+global_buzz_list <- reactiveVal(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))  # Liste des buzzers
+global_players <- reactiveVal(data.frame(name = character(), stringsAsFactors = FALSE))
 
 # UI
 ui <- fluidPage(
   titlePanel("Application Shiny avec Quiz et Buzzer"),
   
   tabsetPanel(
-    tabPanel("Accueil", 
-             h2("Bienvenue !"),
-             p("Ceci est une application Shiny avec plusieurs onglets.")
-    ),
-    
     tabPanel("Buzzer", 
              sidebarLayout(
                sidebarPanel(
                  textInput("session_code", "Code de session :", ""),
                  radioButtons("user_role", "Choisissez votre rôle :", choices = c("Admin", "Joueur")),
                  actionButton("enter_room", "Entrer dans la salle"),
-                 
                  conditionalPanel(
                    condition = "input.user_role == 'Joueur'",
                    textInput("player_name", "Entrez votre pseudo :", ""),
                    actionButton("register_player", "S'inscrire"),
                    h3("Question en cours :"),
-                   textOutput("current_question"),
-                   actionButton("buzz", "Buzzer !", class = "btn btn-danger"),
+                   textOutput("display_question"),
+                   actionButton("buzz", "Buzzer !", class = "btn-danger"),
                    textOutput("buzz_feedback")
                  )
                ),
@@ -37,21 +31,20 @@ ui <- fluidPage(
                  uiOutput("quiz_ui")
                )
              )
-    ),
-    
-    tabPanel("À propos", 
-             h2("Informations"),
-             p("Cette application Shiny a été développée pour gérer un système de quiz avec buzzer multijoueur.")
     )
   )
 )
 
 # Server
 server <- function(input, output, session) {
+  session_data <- reactiveValues(session_code = NULL, role = NULL)
   
-  # Interface dynamique
   output$quiz_ui <- renderUI({
-    if (input$user_role == "Admin") {
+    if (is.null(session_data$session_code) || is.null(session_data$role)) {
+      return(h3("Veuillez entrer un code de session et un rôle pour accéder au quiz."))
+    }
+    
+    if (session_data$role == "Admin") {
       return(
         fluidPage(
           h2("Interface Admin"),
@@ -70,50 +63,53 @@ server <- function(input, output, session) {
     }
   })
   
-  # Gestion des questions (Admin)
+  observeEvent(input$enter_room, {
+    if (input$session_code != "" && input$user_role %in% c("Admin", "Joueur")) {
+      session_data$session_code <- input$session_code
+      session_data$role <- input$user_role
+    }
+  })
+  
   observeEvent(input$add_question, {
     new_q <- input$new_question
     if (new_q != "") {
-      questions(append(questions(), list(new_q)))
+      global_questions(c(global_questions(), new_q))
     }
   })
   
   output$question_list <- renderTable({
-    data.frame(Questions = questions())
+    data.frame(Questions = global_questions())
   })
   
   observeEvent(input$start_game, {
-    if (length(questions()) > 0) {
-      current_question_index(1)
-      buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
+    if (length(global_questions()) > 0) {
+      global_current_question(global_questions()[[1]])
+      global_buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
     }
   })
   
   output$current_question <- renderText({
-    q_list <- questions()
-    if (length(q_list) >= current_question_index() && current_question_index() > 0) {
-      q_list[[current_question_index()]]
-    } else {
-      "Aucune question disponible"
-    }
+    global_current_question()
   })
   
-  # Gestion des joueurs
+  output$display_question <- renderText({
+    global_current_question()
+  })
+  
   observeEvent(input$register_player, {
     name <- input$player_name
-    if (name != "" && !(name %in% players()$name)) {
-      players(rbind(players(), data.frame(name = name)))
+    if (name != "" && !(name %in% global_players()$name)) {
+      global_players(rbind(global_players(), data.frame(name = name)))
     }
   })
   
-  # Gestion des buzzers
   observeEvent(input$buzz, {
     name <- input$player_name
-    if (name %in% players()$name) {
+    if (name %in% global_players()$name) {
       buzz_time <- Sys.time()
-      current_buzzers <- buzz_list()
+      current_buzzers <- global_buzz_list()
       if (!(name %in% current_buzzers$name)) {
-        buzz_list(rbind(current_buzzers, data.frame(name = name, time = buzz_time)))
+        global_buzz_list(rbind(current_buzzers, data.frame(name = name, time = buzz_time)))
         output$buzz_feedback <- renderText("Buzz enregistré !")
       } else {
         output$buzz_feedback <- renderText("Vous avez déjà buzzé.")
@@ -122,18 +118,20 @@ server <- function(input, output, session) {
   })
   
   output$buzz_order <- renderTable({
-    buzz_list()[order(buzz_list()$time), ]
+    global_buzz_list()[order(global_buzz_list()$time), ]
   })
   
   observeEvent(input$next_question, {
-    if (current_question_index() < length(questions())) {
-      current_question_index(current_question_index() + 1)
-      buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
+    q_list <- global_questions()
+    current_index <- match(global_current_question(), q_list)
+    if (!is.na(current_index) && current_index < length(q_list)) {
+      global_current_question(q_list[[current_index + 1]])
+      global_buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
     }
   })
   
   observeEvent(input$reset_buzzers, {
-    buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
+    global_buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
   })
 }
 
