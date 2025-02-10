@@ -18,16 +18,7 @@ ui <- fluidPage(
                sidebarPanel(
                  textInput("session_code", "Code de session :", ""),
                  radioButtons("user_role", "Choisissez votre rôle :", choices = c("Admin", "Joueur")),
-                 actionButton("enter_room", "Entrer dans la salle"),
-                 conditionalPanel(
-                   condition = "input.user_role == 'Joueur'",
-                   textInput("player_name", "Entrez votre pseudo :", ""),
-                   actionButton("register_player", "S'inscrire"),
-                   actionButton("buzz", "Buzzer !", class = "btn-danger"),
-                   textOutput("buzz_feedback"),
-                   h3("Question en cours :"),
-                   textOutput("current_question")
-                 )
+                 actionButton("enter_room", "Entrer dans la salle")
                ),
                mainPanel(
                  uiOutput("quiz_ui")
@@ -76,9 +67,19 @@ server <- function(input, output, session) {
           h3("Ordre des buzz :"),
           tableOutput("buzz_order"),
           h3("Question en cours :"),
+          textOutput("current_question")
+        )
+      )
+    } else if (session_data$role == "Joueur") {
+      return(
+        fluidPage(
+          h2("Interface Joueur"),
+          textInput("player_name", "Entrez votre pseudo :", ""),
+          actionButton("register_player", "S'inscrire"),
+          h3("Question en cours :"),
           textOutput("current_question"),
-          h3("Liste des joueurs inscrits :"),
-          tableOutput("player_list")
+          actionButton("buzz", "Buzzer !", class = "btn-danger"),
+          textOutput("buzz_feedback")
         )
       )
     }
@@ -126,10 +127,6 @@ server <- function(input, output, session) {
     if (name != "" && !(name %in% session_data$players$name)) {
       session_data$players <- rbind(session_data$players, data.frame(name = name))
     }
-  })
-  
-  output$player_list <- renderTable({
-    session_data$players
   })
   
   # Gestion des buzzers
