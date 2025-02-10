@@ -1,7 +1,7 @@
 # OPENg3
 
 
-## Application OPEN sujet 3 
+## Application OPEN du sujet 3 
 
 Notre application est conçue pour être utilisée lors du Quizz *"Question pour un Isarien"* de l'association **BookISARA**.
 
