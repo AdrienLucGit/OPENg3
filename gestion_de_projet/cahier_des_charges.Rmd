@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Objectif principal
 
-Obtenir un buzzer fonctionnel avec un hôte qui contrôle les paramètres du buzzer et des participants qui peuvent l'utiliser selon les paramètres choisis.
+Obtenir un buzzer fonctionnel avec un hôte qui contrôle les paramètres du buzzer et des participants qui peuvent l'utiliser selon les paramètres choisis. 
 
 #Cahier des charges
 
