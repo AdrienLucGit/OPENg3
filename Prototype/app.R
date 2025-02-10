@@ -45,7 +45,7 @@ ui <- fluidPage(
                  actionButton("start_game", "Démarrer le jeu"),
                  actionButton("next_question", "Question suivante")
                )
-             )
+             ) 
     ),
     
     # À propos
