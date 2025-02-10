@@ -1,0 +1,41 @@
+---
+title: "Générique"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Fixer un miroir CRAN avant d'installer des packages
+options(repos = c(CRAN = "https://cloud.r-project.org/"))
+
+# Installer le package knitr si nécessaire
+if (!require(knitr)) {
+  install.packages("knitr")
+}
+
+# Charger la bibliothèque knitr
+library(knitr)
+```
+
+
+## **Auteurs :**
+
+- **BARRET Anthony**  
+- **BLANPAIN Chloé**  
+- **BLIGUET Typhaine**  
+- **CHI ACHERE Desmond**  
+- **FAURE Marie**  
+- **FAYAD Adib**  
+- **LUC Adrien**  
+- **MEFFRE ALEXANDRE Simon**  
+- **POTTIAU Zoé**  
+
+## **ISARA Lyon**
+
+```{r, echo=FALSE,out.width="30%"}
+knitr::include_graphics("logo.isara.jpg")
+```
+
+
+---
+
+Merci d'avoir utilisé notre application !
