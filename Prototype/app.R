@@ -1,11 +1,14 @@
 library(shiny)
 
-# Store the names of players who pressed the buzzer (as a vector)
-reactive_buzzers <- reactiveVal(c())
+# Reactive values for questions and buzzers
+questions <- reactiveVal(list())  # Store quiz questions
+current_question_index <- reactiveVal(0)  # Track current question
+buzz_list <- reactiveVal(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))  # Store buzz order
+players <- reactiveVal(data.frame(name = character(), buzz_time = numeric(), stringsAsFactors = FALSE))  # Player list
 
-# Define the UI
+# UI
 ui <- fluidPage(
-  titlePanel("Application Shiny avec Onglets"),
+  titlePanel("Application Shiny avec Quiz et Buzzer"),
   
   tabsetPanel(
     
@@ -15,56 +18,110 @@ ui <- fluidPage(
              p("Ceci est une application Shiny avec plusieurs onglets.")
     ),
     
-    # Onglet 2 : Système de Buzzer
+    # Onglet 2 : Quiz et Buzzer
     tabPanel("Buzzer", 
-             textInput("name", "Enter Your Name:", ""),
-             actionButton("buzz", "Press the Buzzer!", class = "btn btn-danger btn-lg"),
-             
-             h3("Players Who Buzzed:"),
-             uiOutput("order"),  # Affiche la liste des joueurs
-             
-             actionButton("reset", "Reset Buzzer", class = "btn btn-warning")
+             sidebarLayout(
+               sidebarPanel(
+                 textInput("player_name", "Entrez votre pseudo :", ""),
+                 actionButton("register_player", "S'inscrire"),
+                 br(),
+                 h4("Question en cours :"),
+                 textOutput("display_question"),
+                 actionButton("buzz", "Buzzer !", class = "btn btn-danger"),
+                 br(),
+                 h3("Ordre des buzz :"),
+                 tableOutput("buzz_order"),
+                 actionButton("reset_buzzers", "Réinitialiser les buzzers")
+               ),
+               mainPanel(
+                 h3("Administration"),
+                 textInput("new_question", "Nouvelle question :", ""),
+                 actionButton("add_question", "Ajouter la question"),
+                 br(),
+                 h4("Questions enregistrées :"),
+                 tableOutput("question_list"),
+                 actionButton("start_game", "Démarrer le jeu"),
+                 actionButton("next_question", "Question suivante")
+               )
+             )
     ),
     
     # Onglet 3 : À propos
     tabPanel("À propos", 
              h2("Informations"),
-             p("Cette application Shiny a été développée pour gérer un système de buzzer multijoueur.")
+             p("Cette application Shiny a été développée pour gérer un système de quiz avec buzzer multijoueur.")
     )
   )
 )
 
-# Define the Server logic
+# Server
 server <- function(input, output, session) {
   
-  observeEvent(input$buzz, {
-    if (input$name != "") {
-      # Append the name to the list of buzzers
-      current_buzzers <- reactive_buzzers()
-      current_buzzers <- c(current_buzzers, input$name)
-      reactive_buzzers(current_buzzers)  # Update the reactive value
+  # Ajouter une question
+  observeEvent(input$add_question, {
+    new_q <- input$new_question
+    if (new_q != "") {
+      questions(c(questions(), new_q))
     }
   })
   
-  output$order <- renderUI({
-    if (length(reactive_buzzers()) == 0) {
-      return("No one has buzzed yet!")
+  # Afficher les questions enregistrées
+  output$question_list <- renderTable({
+    data.frame(Questions = questions())
+  })
+  
+  # Démarrer le quiz
+  observeEvent(input$start_game, {
+    current_question_index(1)
+    buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))  # Reset buzz list
+  })
+  
+  # Afficher la question en cours
+  output$display_question <- renderText({
+    q_list <- questions()
+    if (length(q_list) >= current_question_index()) {
+      q_list[[current_question_index()]]
     } else {
-      buzzers <- reactive_buzzers()
-      
-      tagList(
-        lapply(1:length(buzzers), function(i) {
-          div(paste(i, ".", buzzers[i]))
-        })
-      )
+      "Aucune question disponible"
     }
   })
   
-  observeEvent(input$reset, {
-    reactive_buzzers(c())  # Reset the buzzer list
+  # Inscription des joueurs
+  observeEvent(input$register_player, {
+    name <- input$player_name
+    if (name != "" && !(name %in% players()$name)) {
+      players(rbind(players(), data.frame(name = name, buzz_time = Inf)))
+    }
+  })
+  
+  # Buzzer un joueur
+  observeEvent(input$buzz, {
+    name <- input$player_name
+    if (name %in% players()$name) {
+      buzz_time <- Sys.time()
+      current_buzzers <- buzz_list()
+      if (!(name %in% current_buzzers$name)) {
+        buzz_list(rbind(current_buzzers, data.frame(name = name, time = buzz_time)))
+      }
+    }
+  })
+  
+  # Afficher l'ordre des buzzers
+  output$buzz_order <- renderTable({
+    buzz_list()[order(buzz_list()$time), ]
+  })
+  
+  # Passer à la question suivante
+  observeEvent(input$next_question, {
+    current_question_index(current_question_index() + 1)
+    buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))  # Reset buzz list
+  })
+  
+  # Réinitialiser les buzzers
+  observeEvent(input$reset_buzzers, {
+    buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
   })
 }
 
 # Run the app
-shinyApp(ui, server)
-
+shinyApp(ui = ui, server = server)
