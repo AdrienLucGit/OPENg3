@@ -5,17 +5,33 @@ reactive_buzzers <- reactiveVal(c())
 
 # Define the UI
 ui <- fluidPage(
-  titlePanel("Multiplayer Buzzer System"),
+  titlePanel("Application Shiny avec Onglets"),
   
-  textInput("name", "Enter Your Name:", ""),
-  actionButton("buzz", "Press the Buzzer!", class = "btn btn-danger btn-lg"),
-  
-  h3("Players Who Buzzed:"),
-  
-  # Render the list of players dynamically
-  uiOutput("order"),
-  
-  actionButton("reset", "Reset Buzzer", class = "btn btn-warning")
+  tabsetPanel(
+    
+    # Onglet 1 : Accueil
+    tabPanel("Accueil", 
+             h2("Bienvenue !"),
+             p("Ceci est une application Shiny avec plusieurs onglets.")
+    ),
+    
+    # Onglet 2 : Système de Buzzer
+    tabPanel("Buzzer", 
+             textInput("name", "Enter Your Name:", ""),
+             actionButton("buzz", "Press the Buzzer!", class = "btn btn-danger btn-lg"),
+             
+             h3("Players Who Buzzed:"),
+             uiOutput("order"),  # Affiche la liste des joueurs
+             
+             actionButton("reset", "Reset Buzzer", class = "btn btn-warning")
+    ),
+    
+    # Onglet 3 : À propos
+    tabPanel("À propos", 
+             h2("Informations"),
+             p("Cette application Shiny a été développée pour gérer un système de buzzer multijoueur.")
+    )
+  )
 )
 
 # Define the Server logic
@@ -31,17 +47,13 @@ server <- function(input, output, session) {
   })
   
   output$order <- renderUI({
-    # If no one has buzzed, show a message
     if (length(reactive_buzzers()) == 0) {
       return("No one has buzzed yet!")
     } else {
-      # Get the current list of buzzers
       buzzers <- reactive_buzzers()
       
-      # Create a list of UI elements (tags) for each player
       tagList(
         lapply(1:length(buzzers), function(i) {
-          # Create each numbered item as an HTML tag
           div(paste(i, ".", buzzers[i]))
         })
       )

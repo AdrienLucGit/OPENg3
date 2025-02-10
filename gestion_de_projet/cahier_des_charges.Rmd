@@ -13,28 +13,69 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Obtenir un buzzer fonctionnel avec un hôte qui contrôle les paramètres du buzzer et des participants qui peuvent l'utiliser selon les paramètres choisis. 
 
+
+
 #Cahier des charges
 
+Dans cette première version, un hôte créé une "game", que les participants peuvent rejoindre.Les participants ont accès à un buzzer, qu'ils actionnent pour demander la parole et pouvoir répondre aux questions. Ces questions sont posées à l'oral, au sein du club BookIsara. 
+
+Le but de ce buzzer et d'avoir une chronologie sur l'utilisation du buzzer et d'obtenir l'ordre dans lequel les participants ont actionné le buzzer afin d'avoir un jeu fluide et juste. 
+
 ##l'interface 
-- une interface principale où l'on peut sélectionner si on est l'hôte ou un participant
+une interface principale où l'on peut sélectionner si on est l'hôte ou un participant.
+Deux interfaces différentes et indépendantes selon si on est hôte ou participant. 
+L'interface de l'hôte sera plus complexe et permettra de gérer le déroulement du jeu.
 
-## les participants
-- Avoir un buzzer qui s’affiche
-- Quand un buzzer est enclenché, il apparaît dans l’ordre sur l’écran de l’hôte et les joueurs ne peuvent plus buzzer après
+### l'interface de l'hôte
+L’hôte doit pouvoir réinitialiser le buzzer de chaque joueur.
+L’hôte doit pouvoir exclure des joueurs.
 
-## l'hôte
-- L’hôte doit pouvoir réinitialiser les buzzers
-- L’hôte doit pouvoir exclure des joueurs
+
+### l'interface des participants
+Affichage d'un buzzer, où il est possible de l'actionner.
+Quand un buzzer est enclenché, l'ordre d'actionnage s'affiche et les joueurs ne peuvent plus actionner leur buzzer.
+
+
 
 # Améliorations possibles 
 
-- Dès qu’une personne buzz, elle a un chrono pour répondre (temps adaptable par l’hôte)
-- Possibilité pour l’hôte de bloquer les buzzer pour que personne ne buzz
-- Avoir la possibilité de répondre Vrai ou Faux (pas de buzzer juste 2 réponses possibles)
-- Avoir un curseur en réponse (pour les questions « au plus proche »
-- Chaque équipe est marqué d’une couleur différente (elles peuvent potentiellement le choisir au début)
-Possibilité d’enregistrer les questions à l’avance sur le site pour pouvoir les lire depuis le téléphone (en pouvant choisir le type de questions poser) et donc pouvoir passer d’une questions à une autre (genre quand elles sont préparer, elles sont dans un certain ordre qui se déroule pendant la partie)
+##l'interface
+
+### choix des réponses 
+Création de différents types de réponses : QCM, vrai/faux, curseur de réponses (pour les questions "au plus proches"), ...
+
+### gagnants
+A la fin de la partie, un podium apparait avec les trois premières équipes ou les trois premiers joueurs qui ont le plus de points. 
+
+### équipes 
+
+Possibilité de créer des équipes entre joueurs et qui sont identifiables par des noms et couleurs différentes.
+Possibilité de choisir le nom et la couleur, lors de la création de l'équipe.
+
+###buzzer 
+Possibilité pour les participants de changer le bruit du buzzer.
 
 
-- L’hôte peut distribuer les points (PS: pas un truc tout petit sinon c’est très chiant)
-Possibilité pour les joueurs d’enregistrer une voix pour le bu
+## l'hôte : le game master 
+
+### Questions
+L'hôte a la possibilité d'ajouter les questions en amont du jeu.
+Possibilité d’enregistrer les questions à l’avance sur le site pour pouvoir les lire depuis le téléphone (en pouvant choisir le type de questions à poser) et donc pouvoir passer d’une questions à une autre (quand elles sont préparée, elles sont dans un certain ordre qui se déroule pendant la partie).
+
+### temps
+
+Création d'un minuteur pour délimiter un temps de réponses choisi par l'hôte, directement sur son interface. 
+Le décompte du temps s'affiche sur l'interface des participants. 
+Lorsque le temps est écoulé, un message s'affiche (possibilité d'améliorer le message). 
+
+
+### buzzers
+
+Possibilité pour l’hôte de bloquer les buzzers pour que personne ne les actionnent.
+
+### score
+L'hôte a la possibilité d'atribuer des points aux joueurs ou aux équipes.
+Le score s'affiche sur l'interface des participants et s'actualiser au cours de la partie.
+Le score final s'affiche en gros à la fin de la partie. 
+
+
