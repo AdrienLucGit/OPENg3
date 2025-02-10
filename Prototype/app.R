@@ -15,7 +15,8 @@ ui <- fluidPage(
     # Onglet 1 : Accueil avec mode d'emploi Administrateur
     tabPanel("Accueil", 
              h2("Bienvenue dans l'application Quiz !"),
-             p("Cette application Shiny permet de gérer un quiz multijoueur avec un système de buzzer."),
+             p("Notre application Buzzer est une solution simple et interactive conçue pour faciliter et dynamiser vos jeux, quiz et compétitions. Elle permet aux utilisateurs d’appuyer sur un bouton virtuel pour déclencher un signal sonore, indiquant ainsi qui a répondu."),
+             p("Idéale pour des soirées entre amis, des événements ludiques ou des sessions de formation, cette application garantit une expérience fluide et équitable. Grâce à son interface intuitive et sa réactivité instantanée, elle transforme n'importe quel appareil en un véritable buzzer de jeu. 🚀"),
              
              # Mode d'emploi Administrateur
              h3("Mode d'emploi Administrateur"),
