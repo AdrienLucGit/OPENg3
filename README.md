@@ -14,7 +14,7 @@ Notre application est conçue pour être utilisée lors du Quizz *"Question pour
 - L'application permet aux joueurs **d'appuyer sur un buzzer** pour répondre à la question dans un temps imparti.  
 - Dès qu’une personne buzz, elle a un **chrono pour répondre** (temps adaptable par l’hôte).  
 - La réponse **n'est pas soumise** sur l'application mais donnée **à l'oral**.  
-- Quand un buzzer est enclenché, **il apparaît dans l’ordre sur l’écran de l’hôte** et les joueurs peuvent continuer de buzzer ensuite si le premier joeur répond faux à la question.  
+- Quand un buzzer est enclenché, **il apparaît dans l’ordre sur l’écran de l’hôte** et les autres joueurs peuvent continuer de buzzer si le premier joueur répond faux à la question.  
 - L’hôte doit pouvoir **réinitialiser et bloquer les buzzers**.  
 - L’hôte doit pouvoir **exclure des joueurs**.  
 
