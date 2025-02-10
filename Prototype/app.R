@@ -11,6 +11,13 @@ ui <- fluidPage(
   titlePanel("Application Shiny avec Quiz et Buzzer"),
   
   tabsetPanel(
+    
+    # Onglet 1 : Accueil
+    tabPanel("Accueil", 
+             h2("Bienvenue !"),
+             p("Ceci est une application Shiny avec plusieurs onglets.")
+    ),
+    # Onglet 2 : Quiz et Buzzer
     tabPanel("Buzzer", 
              sidebarLayout(
                sidebarPanel(
