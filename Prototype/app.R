@@ -12,10 +12,26 @@ ui <- fluidPage(
   
   tabsetPanel(
     
-    # Onglet 1 : Accueil
+    # Onglet 1 : Accueil avec mode d'emploi Administrateur
     tabPanel("Accueil", 
-             h2("Bienvenue !"),
-             p("Ceci est une application Shiny avec plusieurs onglets.")
+             h2("Bienvenue dans l'application Quiz !"),
+             p("Cette application Shiny permet de gérer un quiz multijoueur avec un système de buzzer."),
+             
+             # Mode d'emploi Administrateur
+             h3("Mode d'emploi Administrateur"),
+             p("En tant qu'administrateur, vous avez plusieurs fonctionnalités pour gérer le quiz et les joueurs :"),
+             tags$ul(
+               tags$li("Ajouter des questions : Vous pouvez ajouter de nouvelles questions à tout moment."),
+               tags$li("Démarrer le jeu : Cliquez sur le bouton 'Démarrer le jeu' pour commencer le quiz."),
+               tags$li("Passer à la question suivante : Vous pouvez faire défiler les questions en cliquant sur 'Question suivante'."),
+               tags$li("Réinitialiser les buzzers : Si nécessaire, vous pouvez réinitialiser l'ordre des buzzers."),
+               tags$li("Voir l'ordre des buzzers : L'ordre d'arrivée des joueurs au buzzer est affiché après chaque question."),
+               tags$li("Bloquer ou exclure les buzzer : Si nécessaire, vous pouvez bloquer ou exclure un buzzer.")
+             ),
+             p("Suivez les instructions sur les autres onglets pour gérer le quiz et participer au jeu."),
+             br(),
+             
+             actionButton("go_to_quiz", "Accéder au Quiz et Buzzer", class = "btn-primary")
     ),
     
     # Onglet 2 : Quiz et Buzzer
@@ -120,6 +136,11 @@ server <- function(input, output, session) {
   # Réinitialiser les buzzers
   observeEvent(input$reset_buzzers, {
     buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
+  })
+  
+  # Navigation vers l'onglet Quiz et Buzzer
+  observeEvent(input$go_to_quiz, {
+    updateTabsetPanel(session, "tabs", selected = "Buzzer")
   })
 }
 
