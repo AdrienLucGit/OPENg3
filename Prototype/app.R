@@ -24,7 +24,9 @@ ui <- fluidPage(
                    textInput("player_name", "Entrez votre pseudo :", ""),
                    actionButton("register_player", "S'inscrire"),
                    actionButton("buzz", "Buzzer !", class = "btn-danger"),
-                   textOutput("buzz_feedback")
+                   textOutput("buzz_feedback"),
+                   h3("Question en cours :"),
+                   textOutput("current_question")
                  )
                ),
                mainPanel(
@@ -74,7 +76,9 @@ server <- function(input, output, session) {
           h3("Ordre des buzz :"),
           tableOutput("buzz_order"),
           h3("Question en cours :"),
-          textOutput("current_question")
+          textOutput("current_question"),
+          h3("Liste des joueurs inscrits :"),
+          tableOutput("player_list")
         )
       )
     }
@@ -122,6 +126,10 @@ server <- function(input, output, session) {
     if (name != "" && !(name %in% session_data$players$name)) {
       session_data$players <- rbind(session_data$players, data.frame(name = name))
     }
+  })
+  
+  output$player_list <- renderTable({
+    session_data$players
   })
   
   # Gestion des buzzers
