@@ -8,7 +8,7 @@ session_data <- reactiveValues(
   players = data.frame(name = character(), stringsAsFactors = FALSE)
 )
 
-# Interface utilisateur 
+# Interface utilisateur
 ui <- fluidPage(
   titlePanel("Quiz en ligne avec Buzzer"),
   
