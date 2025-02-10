@@ -1,6 +1,5 @@
 # OPENg3
 
-# OPENg3
 
 ## Application OPEN sujet 3 
 
