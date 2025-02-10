@@ -40,9 +40,6 @@ ui <- fluidPage(
                tags$li("Utilisation du buzzer : Une fois la question posée par le maître du jeu, le joueur peut appuyer sur le buzzer s’il connaît la réponse."),
                tags$li("Priorité au plus rapide : Le premier joueur à appuyer est invité à répondre."),
                tags$li("Réinitialisation : Seul le maître du jeu peut réinitialiser le buzzer.")
-               
-             ),
-             
              ),
              
              br(),
