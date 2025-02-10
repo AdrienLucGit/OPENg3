@@ -27,13 +27,13 @@ Deux interfaces différentes et indépendantes selon si on est hôte ou particip
 L'interface de l'hôte sera plus complexe et permettra de gérer le déroulement du jeu.
 
 ### l'interface de l'hôte
-- L’hôte doit pouvoir réinitialiser le buzzer de chaque joueur.
-- L’hôte doit pouvoir exclure des joueurs.
+L’hôte doit pouvoir réinitialiser le buzzer de chaque joueur.
+L’hôte doit pouvoir exclure des joueurs.
 
 
 ### l'interface des participants
-- Affichage d'un buzzer, où il est possible de l'actionner.
-- Quand un buzzer est enclenché, l'ordre d'actionnage s'affiche et les joueurs ne peuvent plus actionner leur buzzer.
+Affichage d'un buzzer, où il est possible de l'actionner.
+Quand un buzzer est enclenché, l'ordre d'actionnage s'affiche et les joueurs ne peuvent plus actionner leur buzzer.
 
 
 
