@@ -1,6 +1,6 @@
 library(shiny)
 
-# UI
+# UI 
 ui <- navbarPage("Quiz App",
                  tabPanel("Admin",
                           sidebarLayout(
