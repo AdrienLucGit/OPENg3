@@ -138,7 +138,10 @@ server <- function(input, output, session) {
           h3("Ordre des buzz :"),
           tableOutput("buzz_order"),
           h3("Question en cours :"),
-          textOutput("current_question")
+          textOutput("current_question"),
+          #LISTE DES JOUEURS
+          h3("Liste des joueurs enregistrés :"),
+          tableOutput("player_list")
         )
       )
     } else {
@@ -151,6 +154,18 @@ server <- function(input, output, session) {
           textOutput("buzz_feedback")
         )
       )
+    }
+  })
+  
+  #MAJ JOUEUR LISTE
+  output$player_list <- renderTable({
+    players <- global_players()
+    
+    if (nrow(players)>0) {
+      players_list
+    }
+    else {
+      data.frame(name ="Aucun joueur enregistré")
     }
   })
   
