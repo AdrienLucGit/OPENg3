@@ -137,16 +137,26 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$next_question, {
-    q_list <- global_questions()
-    current_index <- match(global_current_question(), q_list)
+    q_list <- global_questions()  # Récupère la liste des questions
+    current_index <- match(global_current_question(), q_list)  # Trouve la question actuelle
+    
     if (!is.na(current_index) && current_index < length(q_list)) {
-      global_current_question(q_list[[current_index + 1]])
+      global_current_question(q_list[[current_index + 1]])  # Passe à la question suivante
+      
+      # Réinitialisation des buzzers
       global_buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
+      
+      # Réinitialisation du message du buzzer
+      output$buzz_feedback <- renderText({ "Vous pouvez buzzer !" })
     }
   })
   
   observeEvent(input$reset_buzzers, {
+    req(input$reset_buzzers)  # Vérifie que le bouton a bien été pressé
+    # Réinitialisation de la liste des buzzers
     global_buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
+    # Suppression du message
+    output$buzz_feedback <- renderText({ "Vous pouvez buzzer !" })
   })
 }
 
