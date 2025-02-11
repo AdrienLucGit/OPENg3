@@ -1,6 +1,14 @@
 ---
 title: "cahier des charges"
-author: "Chloé Blanpain"
+author: "BARRET Anthony
+BLANPAIN Chloé
+BLIGUET Typhaine
+CHI ACHERE Desmond
+FAURE Marie
+FAYAD Adib
+LUC Adrien
+MEFFRE ALEXANDRE Simon
+POTTIAU Zoé"
 date: "2025-02-10"
 output: html_document
 ---
