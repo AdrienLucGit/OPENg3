@@ -164,10 +164,10 @@ server <- function(input, output, session) {
     players <- global_players()
     
     if (nrow(players)>0) {
-      players_list
+      return(players) #AFFICHAGE NOM JOUEURS
     }
     else {
-      data.frame(name ="Aucun joueur enregistré")
+      return(data.frame(name ="Aucun joueur enregistré", stringsAsFactors = FALSE))
     }
   })
   
