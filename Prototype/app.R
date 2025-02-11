@@ -1,4 +1,6 @@
 library(shiny)
+library(writexl)
+library(readxl)
 
 # Reactive values for questions and buzzers
 questions <- reactiveVal(list())  # Store quiz questions
@@ -35,7 +37,8 @@ ui <- fluidPage(
                tags$li(strong("Voir l'ordre des buzzers :"),
                        "L'ordre d'arrivée des joueurs au buzzer est affiché après chaque question."),
                tags$li(strong("Bloquer ou exclure les buzzer :"),
-                       "Si nécessaire, vous pouvez bloquer ou exclure un buzzer.")
+                       "Si nécessaire, vous pouvez bloquer ou exclure un buzzer."),
+               downloadButton("download_excel", "Télécharger un questionnaire vierge")
              ),
              
              #Mode d'emploi Joueur 
@@ -161,6 +164,18 @@ server <- function(input, output, session) {
   observeEvent(input$reset_buzzers, {
     buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
   })
+  # Excel prérempli
+  output$download_excel <- downloadHandler(
+    filename = function() {
+      "questionnaires.xlsx"
+    },
+    content = function(file) {
+      # Création d'un dataframe d'exemple
+      df <- data.frame(Questions = "", stringsAsFactors = FALSE)
+      # Sauvegarde en fichier Excel
+      writexl::write_xlsx(df, file)
+    }
+  )
 }
 
 
