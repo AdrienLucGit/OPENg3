@@ -11,27 +11,21 @@ ui <- fluidPage(
   titlePanel("Application Shiny avec Quiz et Buzzer"),
   
   tabsetPanel(
-    
-    # Onglet 1 : Accueil
     tabPanel("Accueil", 
              h2("Bienvenue !"),
-             p("Ceci est une application Shiny avec plusieurs onglets.")
-    ),
-    # Onglet 2 : Quiz et Buzzer
+             p("Ceci est une application Shiny avec plusieurs onglets.")),
+    
     tabPanel("Buzzer", 
              sidebarLayout(
                sidebarPanel(
                  textInput("session_code", "Code de session :", ""),
                  radioButtons("user_role", "Choisissez votre rôle :", choices = c("Admin", "Joueur")),
                  actionButton("enter_room", "Entrer dans la salle"),
+                 
                  conditionalPanel(
                    condition = "input.user_role == 'Joueur'",
                    textInput("player_name", "Entrez votre pseudo :", ""),
-                   actionButton("register_player", "S'inscrire"),
-                   h3("Question en cours :"),
-                   textOutput("display_question"),
-                   actionButton("buzz", "Buzzer !", class = "btn-danger"),
-                   textOutput("buzz_feedback")
+                   actionButton("register_player", "S'inscrire")
                  )
                ),
                mainPanel(
@@ -44,7 +38,7 @@ ui <- fluidPage(
 
 # Server
 server <- function(input, output, session) {
-  session_data <- reactiveValues(session_code = NULL, role = NULL)
+  session_data <- reactiveValues(session_code = NULL, role = NULL, player_name = NULL)
   
   output$quiz_ui <- renderUI({
     if (is.null(session_data$session_code) || is.null(session_data$role)) {
@@ -67,6 +61,16 @@ server <- function(input, output, session) {
           textOutput("current_question")
         )
       )
+    } else {
+      return(
+        fluidPage(
+          h2(paste("Bienvenue,", session_data$player_name)),
+          h3("Question en cours :"),
+          textOutput("display_question"),
+          actionButton("buzz", "Buzzer !", class = "btn-danger"),
+          textOutput("buzz_feedback")
+        )
+      )
     }
   })
   
@@ -74,6 +78,14 @@ server <- function(input, output, session) {
     if (input$session_code != "" && input$user_role %in% c("Admin", "Joueur")) {
       session_data$session_code <- input$session_code
       session_data$role <- input$user_role
+    }
+  })
+  
+  observeEvent(input$register_player, {
+    name <- input$player_name
+    if (name != "" && !(name %in% global_players()$name)) {
+      global_players(rbind(global_players(), data.frame(name = name)))
+      session_data$player_name <- name
     }
   })
   
@@ -103,15 +115,8 @@ server <- function(input, output, session) {
     global_current_question()
   })
   
-  observeEvent(input$register_player, {
-    name <- input$player_name
-    if (name != "" && !(name %in% global_players()$name)) {
-      global_players(rbind(global_players(), data.frame(name = name)))
-    }
-  })
-  
   observeEvent(input$buzz, {
-    name <- input$player_name
+    name <- session_data$player_name
     if (name %in% global_players()$name) {
       buzz_time <- Sys.time()
       current_buzzers <- global_buzz_list()
