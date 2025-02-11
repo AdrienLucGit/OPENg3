@@ -112,6 +112,8 @@ server <- function(input, output, session) {
       return(
         fluidPage(
           h2("Interface Admin"),
+          fileInput("file_upload", "Téléverser un questionnaire", accept = c(".xlsx")),
+          actionButton("load_questions", "Charger les questions"),
           textInput("new_question", "Nouvelle question :", ""),
           actionButton("add_question", "Ajouter la question"),
           tableOutput("question_list"),
@@ -150,7 +152,24 @@ server <- function(input, output, session) {
   output$error_message <- renderText({
     error_message()
   })
-  
+  #FONCTION DE CHARGEMENT DES QUESTIONS AVEC TXT ERREUR 
+  observeEvent(input$load_questions, {
+    req(input$file_upload)
+    df <- readxl::read_xlsx(input$file_upload$datapath)
+    if (!"Questions" %in% colnames(df)) {
+      showNotification("Erreur : le fichier doit contenir une colonne 'Questions'.", type = "error")
+      return(NULL)
+    }
+    global_questions(as.list(df$Questions))
+  })
+  #FONCTION DOWNLOAD EXCEL
+  output$download_excel <- downloadHandler(
+    filename = function() { "questionnaires.xlsx" },
+    content = function(file) {
+      df <- data.frame(Questions = "", stringsAsFactors = FALSE)
+      writexl::write_xlsx(df, file)
+    }
+  )
   observeEvent(input$join_session, {
     if (input$player_name != "" && input$player_session_code == session_password()) {
       global_players(rbind(global_players(), data.frame(name = input$player_name)))
@@ -166,10 +185,20 @@ server <- function(input, output, session) {
     }
   })
   
+  #PERMET D'AVOIR LE NUMERO DES QUESTIONS AVEC LA LISTE
   output$question_list <- renderTable({
-    data.frame(Questions = global_questions())
+    q_list <- unlist(global_questions())
+    if (length(q_list) > 0) {
+      data.frame(Numéro = seq_along(q_list), Questions = q_list)
+    } else {
+      data.frame(Numéro = integer(), Questions = character())
+    }
   })
   
+ # output$question_list <- renderTable({
+   # data.frame(Questions = global_questions())
+  #})
+  ######
   observeEvent(input$start_game, {
     if (length(global_questions()) > 0) {
       global_current_question(global_questions()[[1]])
