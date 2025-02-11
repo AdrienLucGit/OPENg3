@@ -1,5 +1,6 @@
 library(shiny)
 
+
 # Variables globales pour assurer la synchronisation entre l'admin et les joueurs
 global_questions <- reactiveVal(list())  # Liste des questions globales
 global_current_question <- reactiveVal("")  # Question actuelle
@@ -17,6 +18,7 @@ ui <- fluidPage(
              h2("Bienvenue !"),
              p("Ceci est une application Shiny avec plusieurs onglets.")
     ),
+    
     # Onglet 2 : Quiz et Buzzer
     tabPanel("Buzzer", 
              sidebarLayout(
@@ -38,6 +40,25 @@ ui <- fluidPage(
                  uiOutput("quiz_ui")
                )
              )
+    ),
+    
+    # Onglet 3 : À propos
+    tabPanel("À propos", 
+             h2("A propos de notre application"),
+             p("Merci d'avoir utilisé notre application !"),
+             h3("Auteurs :"),
+             p("- BARRET Anthony"),
+             p("- BLANPAIN Chloé"),
+             p("- BLIGUET Typhaine"),
+             p("- CHI ACHERE Desmond"),
+             p("- FAURE Marie"),
+             p("- FAYAD Adib"),
+             p("- LUC Adrien"),
+             p("- MEFFRE ALEXANDRE Simon"),
+             p("- POTTIAU Zoé"),
+             h3("ISARA Lyon - Février 2025"),
+             tags$div(style = "text-align: center;", 
+                      tags$img(src = "logo.isara.png", width = "30%"))
     )
   )
 )
