@@ -1,6 +1,7 @@
 library(shiny)
 library("writexl")
 library("readxl")
+library(beepr)
 
 # Variables globales
 session_password <- reactiveVal(NULL)  # Stocke le code de session défini par l'Admin
@@ -152,12 +153,15 @@ server <- function(input, output, session) {
           h2(paste("Bienvenue,", session_data$player_name)),
           h3("Question en cours :"),
           textOutput("display_question"),
+          selectInput("sound_choice", "Choisissez votre son :", 
+                      choices = c("DING !" = 1, "Victoire !" = 5, "Cri" = 9), selected = 1),
           actionButton("buzz", "Buzzer !", class = "btn-danger"),
           textOutput("buzz_feedback")
         )
       )
     }
   })
+  
   
   #MAJ JOUEUR LISTE
   output$player_list <- renderTable({
@@ -250,6 +254,7 @@ server <- function(input, output, session) {
       if (!(name %in% current_buzzers$name)) {
         global_buzz_list(rbind(current_buzzers, data.frame(name = name, time = buzz_time)))
         output$buzz_feedback <- renderText("Buzz enregistré !")
+        beep(sound = as.numeric(input$sound_choice))  # Jouer le son choisi
       } else {
         output$buzz_feedback <- renderText("Vous avez déjà buzzé.")
       }
@@ -259,6 +264,7 @@ server <- function(input, output, session) {
   output$buzz_order <- renderTable({
     global_buzz_list()[order(global_buzz_list()$time), ]
   })
+  
   
   
   observeEvent(input$next_question, {
