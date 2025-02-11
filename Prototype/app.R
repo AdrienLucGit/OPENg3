@@ -1,4 +1,6 @@
 library(shiny)
+library("writexl")
+library("readxl")
 
 # Variables globales pour assurer la synchronisation entre l'admin et les joueurs
 global_questions <- reactiveVal(list())  # Liste des questions globales
@@ -11,13 +13,14 @@ ui <- fluidPage(
   titlePanel("Application Shiny avec Quiz et Buzzer"),
   
   tabsetPanel(
-    
-    # Onglet 1 : Accueil
     tabPanel("Accueil", 
              h2("Bienvenue !"),
-             p("Ceci est une application Shiny avec plusieurs onglets.")
+             p("Ceci est une application Shiny avec plusieurs onglets."),
+             
+             #Rajout du bouton download
+             downloadButton("download_excel", "Télécharger un questionnaire vierge")
     ),
-    # Onglet 2 : Quiz et Buzzer
+    
     tabPanel("Buzzer", 
              sidebarLayout(
                sidebarPanel(
@@ -55,6 +58,10 @@ server <- function(input, output, session) {
       return(
         fluidPage(
           h2("Interface Admin"),
+          # BOUTON TELEVERSER DANS ADMIN
+          fileInput("file_upload", "Téléverser un questionnaire", accept = c(".xlsx")),
+          ## AJOUTER QUESTION
+          actionButton("load_questions", "Charger les questions"),
           textInput("new_question", "Nouvelle question :", ""),
           actionButton("add_question", "Ajouter la question"),
           tableOutput("question_list"),
@@ -76,6 +83,24 @@ server <- function(input, output, session) {
       session_data$role <- input$user_role
     }
   })
+  #FONCTION DE CHARGEMENT DES QUESTIONS AVEC TXT ERREUR 
+  observeEvent(input$load_questions, {
+    req(input$file_upload)
+    df <- readxl::read_xlsx(input$file_upload$datapath)
+    if (!"Questions" %in% colnames(df)) {
+      showNotification("Erreur : le fichier doit contenir une colonne 'Questions'.", type = "error")
+      return(NULL)
+    }
+    global_questions(as.list(df$Questions))
+  })
+  #FONCTION DOWNLOAD EXCEL
+  output$download_excel <- downloadHandler(
+    filename = function() { "questionnaires.xlsx" },
+    content = function(file) {
+      df <- data.frame(Questions = "", stringsAsFactors = FALSE)
+      writexl::write_xlsx(df, file)
+    }
+  )
   
   observeEvent(input$add_question, {
     new_q <- input$new_question
@@ -84,8 +109,14 @@ server <- function(input, output, session) {
     }
   })
   
+  #PERMET D'AVOIR LE NUMERO DES QUESTIONS AVEC LA LISTE
   output$question_list <- renderTable({
-    data.frame(Questions = global_questions())
+    q_list <- unlist(global_questions())
+    if (length(q_list) > 0) {
+      data.frame(Numéro = seq_along(q_list), Questions = q_list)
+    } else {
+      data.frame(Numéro = integer(), Questions = character())
+    }
   })
   
   observeEvent(input$start_game, {
