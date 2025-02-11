@@ -1,5 +1,6 @@
 library(lubridate)
 library(shiny)
+library(beepr)
 
 ui <- fluidPage(
   hr(),
@@ -8,11 +9,9 @@ ui <- fluidPage(
   actionButton('reset','Reset'),
   numericInput('seconds','Seconds:',value=10,min=0,max=99999,step=1),
   textOutput('timeleft')
-  
 )
 
 server <- function(input, output, session) {
-  
   # Initialize the timer, 10 seconds, not active.
   timer <- reactiveVal(10)
   active <- reactiveVal(FALSE)
@@ -22,16 +21,15 @@ server <- function(input, output, session) {
     paste("Time left: ", seconds_to_period(timer()))
   })
   
-  # observer that invalidates every second. If timer is active, decrease by one.
+  # Observer that invalidates every second. If timer is active, decrease by one.
   observe({
     invalidateLater(1000, session)
     isolate({
-      if(active())
-      {
+      if(active()) {
         timer(timer()-1)
-        if(timer()<1)
-        {
+        if(timer() < 1) {
           active(FALSE)
+          beep(sound = 9)  # Ajout du son à la fin du décompte
           showModal(modalDialog(
             title = "Important message",
             "Countdown completed!"
@@ -41,11 +39,10 @@ server <- function(input, output, session) {
     })
   })
   
-  # observers for actionbuttons
+  # Observers for action buttons
   observeEvent(input$start, {active(TRUE)})
   observeEvent(input$stop, {active(FALSE)})
   observeEvent(input$reset, {timer(input$seconds)})
-  
 }
 
 shinyApp(ui, server)
