@@ -195,10 +195,6 @@ server <- function(input, output, session) {
     }
   })
   
- # output$question_list <- renderTable({
-   # data.frame(Questions = global_questions())
-  #})
-  ######
   observeEvent(input$start_game, {
     if (length(global_questions()) > 0) {
       global_current_question(global_questions()[[1]])
