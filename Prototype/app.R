@@ -136,10 +136,20 @@ server <- function(input, output, session) {
       global_buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
     }
   })
-  
   observeEvent(input$reset_buzzers, {
+    button_state(TRUE)  
     global_buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
   })
+  
+  observe({
+    if (button_state()) {
+      updateActionButton(session, "buzzer", style = "background-color: green; color: white;")
+    } else {
+      updateActionButton(session, "buzzer", style = "background-color: red; color: white;")
+    }
+  })
 }
+
+  
 
 shinyApp(ui = ui, server = server)
