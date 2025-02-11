@@ -2,10 +2,13 @@ library(shiny)
 
 # Variables globales
 session_password <- reactiveVal(NULL)  # Stocke le code de session défini par l'Admin
+admin_password <- "admin123"  # Mot de passe fixe pour l'Admin
 global_questions <- reactiveVal(list())
 global_current_question <- reactiveVal("")
 global_buzz_list <- reactiveVal(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
 global_players <- reactiveVal(data.frame(name = character(), stringsAsFactors = FALSE))
+admin_chosen <- reactiveVal(FALSE)  # Indicateur pour bloquer le choix du rôle après sélection de l'Admin
+error_message <- reactiveVal("")  # Message d'erreur pour le mot de passe
 
 # UI
 ui <- fluidPage(
@@ -15,16 +18,19 @@ ui <- fluidPage(
     tabPanel("Buzzer", 
              sidebarLayout(
                sidebarPanel(
-                 radioButtons("user_role", "Choisissez votre rôle :", choices = c("Admin", "Joueur")),
+                 radioButtons("user_role", "Choisissez votre rôle :", choices = c("Admin", "Joueur"),
+                              selected = character(0), inline = TRUE),
                  
                  conditionalPanel(
-                   condition = "input.user_role == 'Admin'",
+                   condition = "input.user_role == 'Admin' && !input.role_locked",
+                   passwordInput("admin_password_input", "Entrez le mot de passe Admin :", ""),
                    textInput("admin_session_code", "Créer un code de session :", ""),
-                   actionButton("create_session", "Créer la session")
+                   actionButton("create_session", "Créer la session"),
+                   textOutput("error_message")  # Affichage du message d'erreur
                  ),
                  
                  conditionalPanel(
-                   condition = "input.user_role == 'Joueur'",
+                   condition = "input.user_role == 'Joueur' && !input.role_locked",
                    textInput("player_name", "Entrez votre pseudo :", ""),
                    textInput("player_session_code", "Entrez le code de session :", ""),
                    actionButton("join_session", "Rejoindre la session")
@@ -42,6 +48,12 @@ ui <- fluidPage(
 # Server
 server <- function(input, output, session) {
   session_data <- reactiveValues(role = NULL, player_name = NULL)
+  
+  observeEvent(input$user_role, {
+    if (input$user_role == "Admin" && !admin_chosen()) {
+      admin_chosen(TRUE)
+    }
+  })
   
   output$quiz_ui <- renderUI({
     if (is.null(session_data$role)) {
@@ -78,10 +90,17 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$create_session, {
-    if (input$admin_session_code != "") {
+    if (input$admin_password_input == admin_password && input$admin_session_code != "") {
       session_password(input$admin_session_code)
       session_data$role <- "Admin"
+      error_message("")  # Réinitialisation du message d'erreur
+    } else {
+      error_message("Le mot de passe renseigné est erroné")
     }
+  })
+  
+  output$error_message <- renderText({
+    error_message()
   })
   
   observeEvent(input$join_session, {
@@ -150,7 +169,7 @@ server <- function(input, output, session) {
       output$buzz_feedback <- renderText({ "Vous pouvez buzzer !" })
     }
   })
-  
+
   observeEvent(input$reset_buzzers, {
     req(input$reset_buzzers)  # Vérifie que le bouton a bien été pressé
     # Réinitialisation de la liste des buzzers
