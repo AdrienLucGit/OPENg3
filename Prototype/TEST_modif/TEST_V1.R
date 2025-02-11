@@ -166,7 +166,7 @@ server <- function(input, output, session) {
       global_buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
       
       # Réinitialisation du message du buzzer
-      output$buzz_feedback <- renderText({ "Vous pouvez buzzer !" })
+      output$buzz_feedback <- renderText("Vous pouvez buzzer !")
     }
   })
 
@@ -175,7 +175,7 @@ server <- function(input, output, session) {
     # Réinitialisation de la liste des buzzers
     global_buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
     # Suppression du message
-    output$buzz_feedback <- renderText({ "Vous pouvez buzzer !" })
+    output$buzz_feedback <- renderText("Vous pouvez buzzer !")
   })
 }
 
