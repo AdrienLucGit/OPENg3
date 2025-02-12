@@ -52,7 +52,9 @@ function(input, output, session) {
           actionButton("remove_points","Enlever des points"),
           #LISTE DES JOUEURS
           h3("Liste des joueurs enregistrés :"),
-          tableOutput("player_list")
+          tableOutput("player_list"),
+          tags$audio(id = "fin_sound", src = "fin.mp3", type = "audio/mp3", 
+                     controls = FALSE, style = "display:none;")
         )
       )
     } else {
@@ -99,17 +101,27 @@ function(input, output, session) {
     }
   })
   
-  observe({ #chrono
-    invalidateLater(1000, session) #chrono
-    isolate({ #chrono
-      if(active()) { #chrono
-        timer(timer()-1) #chrono
-        if(timer() < 1) { #chrono
-          active(FALSE) #chrono
-          beep(sound = 9)  # Ajout du son à la fin du décompte, chrono
-          showModal(modalDialog( #chrono
-            title = "Important message", #chrono
-            "Countdown completed!" #chrono
+  observe({
+    invalidateLater(1000, session)
+    isolate({
+      if(active()) {
+        timer(timer()-1)
+        if(timer() < 1) {
+          active(FALSE)
+          
+          # Use runjs() to trigger the audio to play when the timer reaches 0
+          runjs("
+            var audio = document.getElementById('fin_sound');
+            if (audio.paused || audio.ended) {
+              audio.currentTime = 0;
+              audio.play();
+            }
+          ")
+          
+          # Show modal after countdown completes
+          showModal(modalDialog(
+            title = "Important message",
+            "Countdown completed!"
           ))
         }
       }
