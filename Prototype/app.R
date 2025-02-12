@@ -138,6 +138,7 @@ server <- function(input, output, session) {
           actionButton("start_game", "Démarrer le jeu"),
           actionButton("next_question", "Question suivante"),
           actionButton("reset_buzzers", "Réinitialiser les buzzers"),
+          actionButton("clear_questions", "Supprimer toutes les questions", class = "btn-danger"),
           h3("Ordre des buzz :"),
           tableOutput("buzz_order"),
           h3("Question en cours :"),
@@ -219,6 +220,10 @@ server <- function(input, output, session) {
     if (new_q != "") {
       global_questions(c(global_questions(), new_q))
     }
+  })
+  
+  observeEvent(input$clear_questions, {
+    global_questions(list())
   })
   
   #PERMET D'AVOIR LE NUMERO DES QUESTIONS AVEC LA LISTE
