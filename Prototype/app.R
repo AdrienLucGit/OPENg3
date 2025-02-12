@@ -107,7 +107,7 @@ ui <- fluidPage(
              h3("ISARA Lyon - Février 2025"),
              tags$div(style = "text-align: center;", 
                       tags$img(src = "logo.isara.png", width = "30%")),
-             tags$a(href = "CGU_Shinyapp.pdf", "Conditions d'utilisation", target = "_blank")
+             tags$a(href = "CGU_Shinyapp.pdf", "Conditions générale d'utilisation", target = "_blank")
     )
   )
 )
