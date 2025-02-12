@@ -3,6 +3,7 @@ library("writexl")
 library("readxl")
 library(beepr)
 
+
 # Variables globales
 session_password <- reactiveVal(NULL)  # Stocke le code de session défini par l'Admin
 admin_password <- "admin123"  # Mot de passe fixe pour l'Admin

@@ -29,8 +29,8 @@ function(input, output, session) {
           actionButton("reset_buzzers", "Réinitialiser les buzzers"),
           actionButton("clear_questions", "Supprimer toutes les questions", class = "btn-danger"),
           actionButton("reset_partiel", "Réinitialiser le jeux", class = "btn-warning"),
-          h3("Ordre des buzz :"),
-          tableOutput("buzz_order"),
+          h3("Ordre des buzzers :"),
+          tableOutput("player_buzz_order"),
           h3("Question en cours :"),
           textOutput("current_question"),
           #LISTE DES JOUEURS
@@ -47,12 +47,36 @@ function(input, output, session) {
           selectInput("sound_choice", "Choisissez votre son :", 
                       choices = c("DING !" = 1, "Victoire !" = 5, "Cri" = 9), selected = 1),
           actionButton("buzz", "Buzzer !", class = "btn-danger"),
-          textOutput("buzz_feedback")
+          textOutput("buzz_feedback"),
+          h3("Ordre des buzzers :"),
+          tableOutput("player_buzz_order")
         )
       )
     }
   })
   
+  output$player_buzz_order <- renderTable({
+    buzz_list <- global_buzz_list()
+    
+    # Si la liste de buzzers n'est pas vide
+    if (nrow(buzz_list) > 0) {
+      # Trier les buzzers par le temps de buzz
+      sorted_buzz_list <- buzz_list[order(buzz_list$time), ]
+      
+      # Ajouter une colonne pour la position (1er, 2ème, etc.)
+      sorted_buzz_list$position <- paste0(seq_along(sorted_buzz_list$name))
+      
+      # Créer un data.frame pour afficher le nom du joueur et sa position
+      display_buzz_order <- data.frame(
+        Position = sorted_buzz_list$position,
+        Joueur = sorted_buzz_list$name
+      )
+      
+      return(display_buzz_order)
+    } else {
+      return(data.frame(Position = character(), Joueur = character()))
+    }
+  })
   
   #MAJ JOUEUR LISTE
   output$player_list <- renderTable({
@@ -97,6 +121,7 @@ function(input, output, session) {
       writexl::write_xlsx(df, file)
     }
   )
+  
   observeEvent(input$join_session, {
     if (input$player_name != "" && input$player_session_code == session_password()) {
       global_players(rbind(global_players(), data.frame(name = input$player_name)))
@@ -156,12 +181,6 @@ function(input, output, session) {
     }
   })
   
-  output$buzz_order <- renderTable({
-    global_buzz_list()[order(global_buzz_list()$time), ]
-  })
-  
-  
-  
   observeEvent(input$next_question, {
     q_list <- global_questions()  # Récupère la liste des questions
     current_question <- global_current_question()  # Récupère la question actuelle
@@ -207,7 +226,6 @@ function(input, output, session) {
     output$buzz_feedback <- renderText("Vous pouvez buzzer !")
     output$buzz_order <- renderTable(data.frame())
   })
-  
   
   # Excel prérempli
   output$download_excel <- downloadHandler(
