@@ -4,6 +4,9 @@ source("global.R")
 function(input, output, session) {
   session_data <- reactiveValues(role = NULL, player_name = NULL)
   
+  timer <- reactiveVal(10) #chrono
+  active <- reactiveVal(FALSE) # chrono
+  
   observeEvent(input$user_role, {
     if (input$user_role == "Admin" && !admin_chosen()) {
       admin_chosen(TRUE)
@@ -21,6 +24,13 @@ function(input, output, session) {
           h2("Interface Admin"),
           fileInput("file_upload", "Téléverser un questionnaire", accept = c(".xlsx")),
           actionButton("load_questions", "Charger les questions"),
+          actionButton('start','Start'), #chrono
+          actionButton('stop','Stop'), #chrono
+          actionButton('reset','Reset'), #chrono
+          numericInput('seconds','Seconds:',value=10,min=0,max=99999,step=1), #chrono
+          output$timeleft <- renderText({ #chrono
+            paste("Time left: ", seconds_to_period(timer()))#chrono
+          }), #chrono
           textInput("new_question", "Nouvelle question :", ""),
           actionButton("add_question", "Ajouter la question"),
           tableOutput("question_list"),
@@ -83,6 +93,26 @@ function(input, output, session) {
     }
   })
   
+  observe({ #chrono
+    invalidateLater(1000, session) #chrono
+    isolate({ #chrono
+      if(active()) { #chrono
+        timer(timer()-1) #chrono
+        if(timer() < 1) { #chrono
+          active(FALSE) #chrono
+          beep(sound = 9)  # Ajout du son à la fin du décompte, chrono
+          showModal(modalDialog( #chrono
+            title = "Important message", #chrono
+            "Countdown completed!" #chrono
+          ))
+        }
+      }
+    })
+  })
+  
+  observeEvent(input$start, {active(TRUE)}) #chrono
+  observeEvent(input$stop, {active(FALSE)}) #chrono
+  observeEvent(input$reset, {timer(input$seconds)}) #chrono
   #MAJ JOUEUR LISTE
   output$player_list <- renderTable({
     players <- global_players()
@@ -208,7 +238,6 @@ function(input, output, session) {
     q_list <- global_questions()  # Récupère la liste des questions
     current_question <- global_current_question()  # Récupère la question actuelle
     current_index <- match(current_question, q_list)  # Trouve l'index de la question actuelle
-    
     if (!is.na(current_index) && current_index < length(q_list)) {
       global_current_question(q_list[[current_index + 1]])  # Passe à la question suivante
       
