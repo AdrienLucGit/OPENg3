@@ -34,6 +34,12 @@ function(input, output, session) {
           tableOutput("player_buzz_order"),
           h3("Question en cours :"),
           textOutput("current_question"),
+          ##points
+          h3("Points des joueurs :"),
+          selectInput("player_for_points", "Choisir un joueur :", choices = NULL),  # Liste déroulante des joueurs
+          numericInput("points_to_add", "nombre de points :", min = 1, value = 1),  # Nombre de points à ajouter ou soustraire
+          actionButton("add_points", "Ajouter des points"),
+          actionButton("remove_points","Enlever des points"),
           #LISTE DES JOUEURS
           h3("Liste des joueurs enregistrés :"),
           tableOutput("player_list")
@@ -242,6 +248,60 @@ function(input, output, session) {
     q_list <- unlist(global_questions())
     q_list <- q_list[-as.numeric(input$selected_questions)]  # Supprime les questions sélectionnées
     global_questions(as.list(q_list))  # Met à jour la liste
+  })
+  
+  #COMPTAGE DES POINTS
+  #ajouter des points
+  observeEvent(input$add_points, {
+    player_name <- input$player_for_points
+    points_to_add <- input$points_to_add
+    if (player_name != "" && points_to_add > 0) {
+      # Récupérer les scores actuels
+      scores <- global_scores()
+      
+      
+      # Vérifier si le joueur existe déjà dans le tableau des scores
+      if (player_name %in% scores$name) {
+        # Si oui, ajouter des points au joueur
+        scores$points[scores$name == player_name] <- scores$points[scores$name == player_name] + points_to_add
+      } else {
+        # Sinon, ajouter le joueur avec les points
+        scores <- rbind(scores, data.frame(name = player_name, points = points_to_add, stringsAsFactors = FALSE))
+      }
+      
+      # Mettre à jour les scores globaux
+      global_scores(scores)
+    }
+  })
+  
+  #enlever des points
+  observeEvent(input$remove_points, {
+    player_name <- input$player_for_points
+    points_to_add <- input$points_to_add
+    if (player_name != "" && points_to_add > 0) {
+      # Récupérer les scores actuels
+      scores <- global_scores()
+      
+      # Vérifier si le joueur existe dans le tableau des scores
+      if (player_name %in% scores$name) {
+        # Si oui, enlever des points au joueur, mais on ne permet pas d'avoir un score négatif
+        new_points <- scores$points[scores$name == player_name] - points_to_add
+        scores$points[scores$name == player_name] <- max(new_points, 0)  # Empêche que le score devienne négatif
+      } else {
+        # Si le joueur n'existe pas dans le tableau des scores, il n'y a rien à faire
+        showNotification("Le joueur n'existe pas dans les scores.", type = "error")
+        return(NULL)
+      }
+      
+      # Mettre à jour les scores globaux
+      global_scores(scores)
+    }
+  })
+  
+  ##Maj liste joueur
+  observe({
+    players <- global_players()
+    updateSelectInput(session, "player_for_points", choices = players$name)
   })
   
   

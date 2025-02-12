@@ -13,3 +13,4 @@ global_buzz_list <- reactiveVal(data.frame(name = character(), time = numeric(),
 global_players <- reactiveVal(data.frame(name = character(), stringsAsFactors = FALSE))
 admin_chosen <- reactiveVal(FALSE)  # Indicateur pour bloquer le choix du rôle après sélection de l'Admin
 error_message <- reactiveVal("")  # Message d'erreur pour le mot de passe
+global_scores <- reactiveVal(data.frame(name = character(), points = numeric(), stringsAsFactors = FALSE))#stock le score des joueurs
