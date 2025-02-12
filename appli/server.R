@@ -18,6 +18,30 @@ function(input, output, session) {
     if (session_data$role == "Admin") {
       return(
         fluidPage(
+          ### AJOUT CSS de personalisation de bouton
+          # Ajout du CSS pour personnaliser les boutons
+          tags$style(HTML("
+          #buzz {
+            background-color: green !important;
+            color: white !important;
+            border-color: darkgreen !important;
+          }
+          
+          .buzzed {
+            background-color: darkgreen !important;
+            color: white !important;
+          }
+        ")),
+          
+          # JavaScript pour changer l'apparence du bouton en temps réel
+          tags$script(HTML("
+          $(document).on('click', '#buzz', function() {
+            $(this).addClass('buzzed');
+            $(this).text('Buzzé !');
+            $(this).prop('disabled', true);
+          });
+        ")),
+          #####FIN AJOUT 13.02
           h2("Interface Admin"),
           fileInput("file_upload", "Téléverser un questionnaire", accept = c(".xlsx")),
           actionButton("load_questions", "Charger les questions"),
@@ -47,13 +71,17 @@ function(input, output, session) {
           textOutput("display_question"),
           selectInput("sound_choice", "Choisissez votre son :", 
                       choices = c("DING !" = 1, "Victoire !" = 5, "Cri" = 9), selected = 1),
-          actionButton("buzz", "Buzzer !", class = "btn-danger"),
+          actionButton("buzz", "Buzzer !", class = "btn-info"),
           textOutput("buzz_feedback"),
           h3("Ordre des buzzers :"),
           tableOutput("player_buzz_order")
         )
       )
     }
+  })
+  ####### PERMET DE UPDATE LE BOUTON
+  observeEvent(input$buzz, {
+    updateActionButton(session, "buzz", label = "Buzzé !")
   })
   
   output$player_buzz_order <- renderTable({
