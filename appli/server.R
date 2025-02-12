@@ -28,6 +28,7 @@ function(input, output, session) {
           actionButton("next_question", "Question suivante"),
           actionButton("reset_buzzers", "Réinitialiser les buzzers"),
           actionButton("clear_questions", "Supprimer toutes les questions", class = "btn-danger"),
+          actionButton("reset_partiel", "Réinitialiser le jeux", class = "btn-warning"),
           h3("Ordre des buzz :"),
           tableOutput("buzz_order"),
           h3("Question en cours :"),
@@ -185,6 +186,29 @@ function(input, output, session) {
     # Suppression du message
     output$buzz_feedback <- renderText({"Vous pouvez buzzer !"})
   })
+  
+  # Dans la partie serveur
+  observeEvent(input$reset_partiel, {
+    # Réinitialisation de toutes les questions
+    global_questions(list())  # Vider toutes les questions
+    
+    # Réinitialisation de la question en cours
+    global_current_question(NULL)
+    
+    # Réinitialisation de la liste des joueurs
+    global_players(data.frame(name = character(), stringsAsFactors = FALSE))
+    
+    # Réinitialisation des buzzers
+    global_buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
+    
+    # Mise à jour des sorties
+    output$current_question <- renderText("")
+    output$display_question <- renderText("")
+    output$buzz_feedback <- renderText("Vous pouvez buzzer !")
+    output$buzz_order <- renderTable(data.frame())
+  })
+  
+  
   # Excel prérempli
   output$download_excel <- downloadHandler(
     filename = function() {
