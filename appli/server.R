@@ -29,6 +29,7 @@ function(input, output, session) {
           actionButton("reset_buzzers", "Réinitialiser les buzzers"),
           actionButton("clear_questions", "Supprimer toutes les questions", class = "btn-danger"),
           actionButton("reset_partiel", "Réinitialiser le jeux", class = "btn-warning"),
+          actionButton("delete_selected", "Supprimer les questions sélectionnées", class = "btn-danger"),
           h3("Ordre des buzzers :"),
           tableOutput("player_buzz_order"),
           h3("Question en cours :"),
@@ -165,6 +166,15 @@ function(input, output, session) {
   output$display_question <- renderText({
     global_current_question()
   })
+  output$question_list <- renderUI({
+    q_list <- unlist(global_questions())
+    if (length(q_list) > 0) {
+      checkboxGroupInput("selected_questions", "Sélectionner les questions à supprimer :", 
+                         choices = setNames(seq_along(q_list), q_list))
+    } else {
+      h3("Aucune question disponible.")
+    }
+  })
   
   observeEvent(input$buzz, {
     name <- session_data$player_name
@@ -226,6 +236,14 @@ function(input, output, session) {
     output$buzz_feedback <- renderText("Vous pouvez buzzer !")
     output$buzz_order <- renderTable(data.frame())
   })
+  
+  observeEvent(input$delete_selected, {
+    req(input$selected_questions)  # Vérifie qu'au moins une question est sélectionnée
+    q_list <- unlist(global_questions())
+    q_list <- q_list[-as.numeric(input$selected_questions)]  # Supprime les questions sélectionnées
+    global_questions(as.list(q_list))  # Met à jour la liste
+  })
+  
   
   # Excel prérempli
   output$download_excel <- downloadHandler(
