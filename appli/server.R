@@ -4,6 +4,9 @@ source("global.R")
 function(input, output, session) {
   session_data <- reactiveValues(role = NULL, player_name = NULL)
   
+  timer <- reactiveVal(10) #chrono
+  active <- reactiveVal(FALSE) # chrono
+  
   observeEvent(input$user_role, {
     if (input$user_role == "Admin" && !admin_chosen()) {
       admin_chosen(TRUE)
@@ -21,6 +24,13 @@ function(input, output, session) {
           h2("Interface Admin"),
           fileInput("file_upload", "Téléverser un questionnaire", accept = c(".xlsx")),
           actionButton("load_questions", "Charger les questions"),
+          actionButton('start','Start'), #chrono
+          actionButton('stop','Stop'), #chrono
+          actionButton('reset','Reset'), #chrono
+          numericInput('seconds','Seconds:',value=10,min=0,max=99999,step=1), #chrono
+          output$timeleft <- renderText({ #chrono
+            paste("Time left: ", seconds_to_period(timer()))#chrono
+          }), #chrono
           textInput("new_question", "Nouvelle question :", ""),
           actionButton("add_question", "Ajouter la question"),
           tableOutput("question_list"),
@@ -51,9 +61,13 @@ function(input, output, session) {
           h2(paste("Bienvenue,", session_data$player_name)),
           h3("Question en cours :"),
           textOutput("display_question"),
-          selectInput("sound_choice", "Choisissez votre son :", 
-                      choices = c("DING !" = 1, "Victoire !" = 5, "Cri" = 9), selected = 1),
-          actionButton("buzz", "Buzzer !", class = "btn-danger"),
+          useShinyjs(),  # Active shinyjs pour exécuter du JavaScript
+          # Ajout du fichier son avec précautions pour éviter le déclenchement automatique
+          tags$audio(id = "buzz_sound", src = "buzz.mp3", type = "audio/mp3",
+                     controls = FALSE, style = "display:none;"),
+          
+          # Interface avec le bouton
+          actionButton("buzz", "Buzzer !", class = "btn btn-primary"),
           textOutput("buzz_feedback"),
           h3("Ordre des buzzers :"),
           tableOutput("player_buzz_order")
@@ -85,6 +99,26 @@ function(input, output, session) {
     }
   })
   
+  observe({ #chrono
+    invalidateLater(1000, session) #chrono
+    isolate({ #chrono
+      if(active()) { #chrono
+        timer(timer()-1) #chrono
+        if(timer() < 1) { #chrono
+          active(FALSE) #chrono
+          beep(sound = 9)  # Ajout du son à la fin du décompte, chrono
+          showModal(modalDialog( #chrono
+            title = "Important message", #chrono
+            "Countdown completed!" #chrono
+          ))
+        }
+      }
+    })
+  })
+  
+  observeEvent(input$start, {active(TRUE)}) #chrono
+  observeEvent(input$stop, {active(FALSE)}) #chrono
+  observeEvent(input$reset, {timer(input$seconds)}) #chrono
   #MAJ JOUEUR LISTE
   output$player_list <- renderTable({
     players <- global_players()
@@ -184,14 +218,23 @@ function(input, output, session) {
   
   observeEvent(input$buzz, {
     name <- session_data$player_name
-    if (name %in% global_players()$name) {
+    players <- global_players()
+    
+    if (name %in% players$name) {
       buzz_time <- Sys.time()
       current_buzzers <- global_buzz_list()
       if (!(name %in% current_buzzers$name)) {
-        global_buzz_list(rbind(current_buzzers, data.frame(name = name, time = buzz_time)))
+        new_buzz <- data.frame(name = name, time = buzz_time)
+        global_buzz_list(rbind(current_buzzers, new_buzz))
         output$buzz_feedback <- renderText("Buzz enregistré !")
-        beep(sound = as.numeric(input$sound_choice))  # Jouer le son choisi
-      } else {
+        runjs("
+          var audio = document.getElementById('buzz_sound');
+          if (audio.paused || audio.ended) {
+            audio.currentTime = 0;
+            audio.play();
+          }
+        ")
+      }else {
         output$buzz_feedback <- renderText("Vous avez déjà buzzé.")
       }
     }
@@ -201,7 +244,6 @@ function(input, output, session) {
     q_list <- global_questions()  # Récupère la liste des questions
     current_question <- global_current_question()  # Récupère la question actuelle
     current_index <- match(current_question, q_list)  # Trouve l'index de la question actuelle
-    
     if (!is.na(current_index) && current_index < length(q_list)) {
       global_current_question(q_list[[current_index + 1]])  # Passe à la question suivante
       
@@ -315,6 +357,6 @@ function(input, output, session) {
       df <- data.frame(Questions = "", stringsAsFactors = FALSE)
       # Sauvegarde en fichier Excel
       writexl::write_xlsx(df, file)
-    }
-  )
+    } )
 }
+
