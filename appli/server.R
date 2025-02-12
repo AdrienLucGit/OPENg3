@@ -300,7 +300,7 @@ function(input, output, session) {
     if (player_name != "" && points_to_add > 0) {
       # Récupérer les scores actuels
       scores <- global_scores()
-      
+    
       
       # Vérifier si le joueur existe déjà dans le tableau des scores
       if (player_name %in% scores$name) {
