@@ -1,13 +1,13 @@
 source("global.R")
 # UI
 fluidPage(
-  style = "background-color: #ffe4b5; padding: 20px; border-radius: 10px;",
+  style = "background-color: #9370DB ; padding: 20px; border-radius: 10px;",
   titlePanel("Application Shiny avec Quiz et Buzzer"),
   
   tabsetPanel(
     # Onglet 1 : Accueil
     tabPanel("Accueil", 
-             style = "background-color: #fefee3; padding: 20px; border-radius: 10px;",
+             style = "background-color: #D8BFD8 ; padding: 20px; border-radius: 10px;",
              h2("Bienvenue dans l'application Quiz !"),
              p("Notre application", strong(em("Buzzer")), 
                "est une solution simple et interactive conçue pour faciliter et dynamiser vos jeux, quiz et compétitions. 
@@ -48,6 +48,7 @@ fluidPage(
     
     # Onglet 2 : Quiz et Buzzer
     tabPanel("Buzzer", 
+             style = "background-color: #D8BFD8; padding: 20px; border-radius: 10px;",
              sidebarLayout(
                sidebarPanel(
                  radioButtons("user_role", "Choisissez votre rôle :", 
@@ -77,7 +78,7 @@ fluidPage(
     
     # Onglet 3 : À propos
     tabPanel("À propos", 
-             style = "background-color: #fefee3; padding: 20px; border-radius: 10px;",
+             style = "background-color: #D8BFD8; padding: 20px; border-radius: 10px;",
              h2("À propos de notre application"),
              p("Merci d'avoir utilisé notre application !"),
              h3("Auteurs :"),
