@@ -45,9 +45,13 @@ function(input, output, session) {
           h2(paste("Bienvenue,", session_data$player_name)),
           h3("Question en cours :"),
           textOutput("display_question"),
-          selectInput("sound_choice", "Choisissez votre son :", 
-                      choices = c("DING !" = 1, "Victoire !" = 5, "Cri" = 9), selected = 1),
-          actionButton("buzz", "Buzzer !", class = "btn-danger"),
+          useShinyjs(),  # Active shinyjs pour exécuter du JavaScript
+          # Ajout du fichier son avec précautions pour éviter le déclenchement automatique
+          tags$audio(id = "buzz_sound", src = "buzz.mp3", type = "audio/mp3",
+                     controls = FALSE, style = "display:none;"),
+          
+          # Interface avec le bouton
+          actionButton("buzz", "Buzzer !", class = "btn btn-primary"),
           textOutput("buzz_feedback"),
           h3("Ordre des buzzers :"),
           tableOutput("player_buzz_order")
@@ -178,14 +182,23 @@ function(input, output, session) {
   
   observeEvent(input$buzz, {
     name <- session_data$player_name
-    if (name %in% global_players()$name) {
+    players <- global_players()
+    
+    if (name %in% players$name) {
       buzz_time <- Sys.time()
       current_buzzers <- global_buzz_list()
       if (!(name %in% current_buzzers$name)) {
-        global_buzz_list(rbind(current_buzzers, data.frame(name = name, time = buzz_time)))
+        new_buzz <- data.frame(name = name, time = buzz_time)
+        global_buzz_list(rbind(current_buzzers, new_buzz))
         output$buzz_feedback <- renderText("Buzz enregistré !")
-        beep(sound = as.numeric(input$sound_choice))  # Jouer le son choisi
-      } else {
+        runjs("
+          var audio = document.getElementById('buzz_sound');
+          if (audio.paused || audio.ended) {
+            audio.currentTime = 0;
+            audio.play();
+          }
+        ")
+      }else {
         output$buzz_feedback <- renderText("Vous avez déjà buzzé.")
       }
     }
@@ -255,6 +268,6 @@ function(input, output, session) {
       df <- data.frame(Questions = "", stringsAsFactors = FALSE)
       # Sauvegarde en fichier Excel
       writexl::write_xlsx(df, file)
-    }
-  )
+    } )
 }
+
