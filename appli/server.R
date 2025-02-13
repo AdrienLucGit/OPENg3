@@ -389,6 +389,51 @@ function(input, output, session) {
     updateSelectInput(session, "player_for_points", choices = players$name)
   })
   
+  ######################################
+  
+  output$player_list <- renderUI({
+    players <- as.data.frame(global_players())  # Liste des joueurs
+    scores <- as.data.frame(global_scores())   # Liste des scores
+    
+    if (nrow(players) > 0) {
+      tagList(
+        lapply(1:nrow(players), function(i) {
+          player_name <- players$name[i]
+          player_score <- if (player_name %in% scores$name) {
+            scores$points[scores$name == player_name]
+          } else {
+            0  # Si le joueur n’a pas encore de score, on affiche 0
+          }
+          
+          div(
+            style = "display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;",
+            span(paste0(player_name, " - ", player_score, " points"), 
+                 style = "margin-right: 10px; font-size: 16px;"),
+            actionButton(inputId = paste0("remove_", i), label = "❌", 
+                         style = "color: red; background: none; border: none; font-size: 18px; cursor: pointer;")
+          )
+        })
+      )
+    } else {
+      h3("Aucun joueur disponible.")
+    }
+  })
+  
+  observe({
+    players <- as.data.frame(global_players())  # Récupère la liste actuelle
+    
+    if (nrow(players) > 0) {
+      lapply(1:nrow(players), function(i) {
+        observeEvent(input[[paste0("remove_", i)]], {
+          if (i <= nrow(players)) {
+            updated_players <- players[-i, , drop = FALSE]  # Supprime la ligne du joueur
+            global_players(updated_players)  # Mise à jour immédiate
+          }
+        }, ignoreInit = TRUE)  # Empêche l'exécution au démarrage
+      })
+    }
+  })
+ 
   
   # Excel prérempli
   output$download_excel <- downloadHandler(
