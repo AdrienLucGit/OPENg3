@@ -22,12 +22,24 @@ function(input, output, session) {
       return(
         fluidPage(
           h2("Interface Admin"),
-          fileInput("file_upload", "Téléverser un questionnaire", accept = c(".xlsx")),
-          actionButton("load_questions", "Charger les questions"),
+          fluidRow(
+            column(8, fileInput("file_upload", "Téléverser un questionnaire", accept = c(".xlsx"))),
+            column(8, actionButton("load_questions", "Charger les questions", 
+                                   style = "font-size: 14px; padding: 6px; width: 100%;"))
+          ),
+          
+          br(),
           useShinyjs(),
-          actionButton('start','Start'), #chrono
-          actionButton('stop','Stop'), #chrono
-          actionButton('reset','Reset'), #chrono
+          fluidRow(
+            column(3, actionButton("start", "START", 
+                                   style = "font-size: 12px; padding: 6px; width: 90%;")),
+            column(3, actionButton("stop", "STOP", 
+                                   style = "font-size: 12px; padding: 6px; width: 90%;")),
+            column(3, actionButton("reset", "RESET", 
+                                   style = "font-size: 12px; padding: 6px; width: 90%;")),
+          ),
+          br(),
+          
           numericInput('seconds','Seconds:',value=10,min=0,max=99999,step=1), #chrono
           output$timeleft <- renderText({ #chrono
             paste("Time left: ", seconds_to_period(timer()))#chrono
@@ -35,12 +47,26 @@ function(input, output, session) {
           textInput("new_question", "Nouvelle question :", ""),
           actionButton("add_question", "Ajouter la question"),
           tableOutput("question_list"),
-          actionButton("start_game", "Démarrer le jeu"),
-          actionButton("next_question", "Question suivante"),
-          actionButton("reset_buzzers", "Réinitialiser les buzzers"),
-          actionButton("clear_questions", "Supprimer toutes les questions", class = "btn-danger"),
-          actionButton("reset_partiel", "Réinitialiser le jeux", class = "btn-warning"),
-          actionButton("delete_selected", "Supprimer les questions sélectionnées", class = "btn-danger"),
+          fluidRow(
+            column(6, actionButton("start_game", "Démarrer le jeu", 
+                                   style = "font-size: 12px; padding: 6px; width: 90%;")),
+            column(6, actionButton("next_question", "Question suivante", 
+                                   style = "font-size: 12px; padding: 6px; width: 90%;"))
+          ),
+          br(),
+          fluidRow(
+            column(6, actionButton("reset_buzzers", "Réinitialiser les buzzers", 
+                                   style = "font-size: 12px; padding: 6px; width: 90%;")),
+            column(6, actionButton("reset_partiel", "Réinitialiser le jeu", 
+                                   style = "font-size: 12px; padding: 6px; width: 90%;"))
+          ),
+          
+          br(),
+          fluidRow(
+            column(6,actionButton("clear_questions", "Supprimer toutes les questions", style = "font-size: 12px; padding: 6px; width: 90%;")),
+            column(6,actionButton("delete_selected", "Supprimer les questions sélectionnées", style = "font-size: 12px; padding: 6px; width: 100%;")),
+          ),
+          
           h3("Ordre des buzzers :"),
           tableOutput("player_buzz_order"),
           h3("Question en cours :"),
@@ -70,7 +96,7 @@ function(input, output, session) {
                      controls = FALSE, style = "display:none;"),
           
           # Interface avec le bouton
-          actionButton("buzz", "Buzzer !", class = "btn btn-primary"),
+          actionButton("buzz", "Buzzer !", class = "btn btn-primary", style = "font-size: 40px; padding: 20px 40px; width: 300px; display: block; margin: 50px auto;"),
           textOutput("buzz_feedback"),
           h3("Ordre des buzzers :"),
           tableOutput("player_buzz_order")
