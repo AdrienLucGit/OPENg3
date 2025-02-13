@@ -4,8 +4,8 @@ source("global.R")
 function(input, output, session) {
   session_data <- reactiveValues(role = NULL, player_name = NULL)
   
-  timer <- reactiveVal(10) #chrono
-  active <- reactiveVal(FALSE) # chrono
+  #timer <- reactiveVal(10) #chrono
+  #active <- reactiveVal(FALSE) # chrono
   
   observeEvent(input$user_role, {
     if (input$user_role == "Admin" && !admin_chosen()) {
@@ -99,7 +99,10 @@ function(input, output, session) {
           actionButton("buzz", "Buzzer !", class = "btn btn-primary", style = "font-size: 40px; padding: 20px 40px; width: 300px; display: block; margin: 50px auto;"),
           textOutput("buzz_feedback"),
           h3("Ordre des buzzers :"),
-          tableOutput("player_buzz_order")
+          tableOutput("player_buzz_order"),
+          output$timeleft <- renderText({ #chrono
+            paste("Time left: ", seconds_to_period(timer()))#chrono
+          }), #chrono
         )
       )
     }

@@ -71,7 +71,8 @@ fluidPage(
                  )
                ),
                mainPanel(
-                 uiOutput("quiz_ui")
+                 uiOutput("quiz_ui"),
+                 h3(textOutput("time_left"))
                )
              )
     ),
