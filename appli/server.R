@@ -24,6 +24,7 @@ function(input, output, session) {
           h2("Interface Admin"),
           fileInput("file_upload", "Téléverser un questionnaire", accept = c(".xlsx")),
           actionButton("load_questions", "Charger les questions"),
+          useShinyjs(),
           actionButton('start','Start'), #chrono
           actionButton('stop','Stop'), #chrono
           actionButton('reset','Reset'), #chrono
