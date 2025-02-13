@@ -96,7 +96,7 @@ function(input, output, session) {
                      controls = FALSE, style = "display:none;"),
           
           # Interface avec le bouton
-          actionButton("buzz", "Buzzer !", class = "btn btn-primary", style = "font-size: 40px; padding: 20px 40px; width: 300px; display: block; margin: 50px auto;"),
+          actionButton("buzz", "Buzzer !", class = "btn btn-primary", style = "font-size: 40px; padding: 20px 40px; width: 300px; display: block; margin: 50px auto;", disabled = !buzzer_state()),
           textOutput("buzz_feedback"),
           h3("Ordre des buzzers :"),
           tableOutput("player_buzz_order"),
@@ -108,6 +108,16 @@ function(input, output, session) {
     }
   })
   
+  # Désactiver le buzzer quand un joueur clique dessus
+  observeEvent(input$buzz, {
+    buzzer_state(FALSE)
+  })
+  
+  # Réactiver le buzzer quand l'admin clique sur reset
+  observeEvent(input$reset_buzzers, {
+    buzzer_state(TRUE)
+  })
+
   output$player_buzz_order <- renderTable({
     buzz_list <- global_buzz_list()
     

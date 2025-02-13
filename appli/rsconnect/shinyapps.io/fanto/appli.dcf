@@ -1,0 +1,10 @@
+name: appli
+title:
+username: fanto
+account: fanto
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13988911
+bundleId: 9794882
+url: https://fanto.shinyapps.io/appli/
+version: 1
