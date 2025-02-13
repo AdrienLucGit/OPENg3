@@ -119,15 +119,18 @@ function(input, output, session) {
   observeEvent(input$start, {active(TRUE)}) #chrono
   observeEvent(input$stop, {active(FALSE)}) #chrono
   observeEvent(input$reset, {timer(input$seconds)}) #chrono
+  
   #MAJ JOUEUR LISTE
   output$player_list <- renderTable({
     players <- global_players()
     
-    if (nrow(players)>0) {
-      return(players) #AFFICHAGE NOM JOUEURS
-    }
-    else {
-      return(data.frame(name ="Aucun joueur enregistré", stringsAsFactors = FALSE))
+    if (nrow(players) > 0) {
+      scores <- global_scores()
+      players_with_scores <- merge(players, scores, by = "name", all.x = TRUE)
+      players_with_scores[is.na(players_with_scores$points), "points"] <- 0  # Initialiser les points à 0 s'ils sont NA
+      return(players_with_scores) # Affichage du nom des joueurs avec leurs points
+    } else {
+      return(data.frame(name = "Aucun joueur enregistré", points = 0, stringsAsFactors = FALSE))
     }
   })
   
