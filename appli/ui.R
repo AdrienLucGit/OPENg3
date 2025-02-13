@@ -1,4 +1,4 @@
-source("global.R") 
+source("global.R")  
 # UI
 fluidPage(
   style = "background-color: #9370DB ; padding: 20px; border-radius: 10px;",

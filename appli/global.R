@@ -2,7 +2,7 @@ library(shiny)
 library(writexl)
 library(readxl)
 library(beepr)
-library(shinyjs) 
+library(shinyjs)  
 library(lubridate)
 
 # Variables globales
