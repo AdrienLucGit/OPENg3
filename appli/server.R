@@ -156,6 +156,7 @@ function(input, output, session) {
     }
   })
   
+  
   output$error_message <- renderText({
     error_message()
   })
