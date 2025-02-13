@@ -70,7 +70,17 @@ fluidPage(
                    condition = "input.user_role == 'Joueur' && !input.role_locked",
                    textInput("player_name", "Entrez votre pseudo :", ""),
                    textInput("player_session_code", "Entrez le code de session :", ""),
-                   actionButton("join_session", "Rejoindre la session")
+                   actionButton("join_session", "Rejoindre la session"),
+                   fileInput("custom_sound", "Uploadez un son de buzz si vous le voulez (MP3 uniquement)", accept = c(".mp3")),
+                   actionButton("confirm_sound", "confirmer le buzz", class = "btn-primary"),
+                   textOutput("file_name"),
+                   tags$audio(
+                     id = "buzz_sound",
+                     src = "buzz.mp3",
+                     type = "audio/mp3",
+                     controls = FALSE,
+                     style = "display:none;"
+                   )
                  )
                ),
                mainPanel(

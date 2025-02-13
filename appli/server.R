@@ -3,6 +3,29 @@ source("global.R")
 # Server
 function(input, output, session) {
   session_data <- reactiveValues(role = NULL, player_name = NULL)
+
+  ###################choix buzzer#############
+  observeEvent(input$confirm_sound, {
+    req(input$custom_sound)  
+    
+    tryCatch({
+      tmp_file <- input$custom_sound$datapath
+      final_path <- file.path("www", "buzz.mp3")
+      file.copy(tmp_file, final_path, overwrite = TRUE)
+      runjs("document.getElementById('buzz_sound').load();")
+      output$file_name <- renderText({
+        paste("File uploaded and saved as: buzz.mp3")
+      })
+    },
+    error = function(e) {
+      output$file_name <- renderText({
+        paste("Error saving file:", e$message)
+      })
+    })
+  })
+  ##################################################
+  
+  
   
   #timer <- reactiveVal(10) #chrono
   #active <- reactiveVal(FALSE) # chrono
