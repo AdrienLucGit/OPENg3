@@ -153,9 +153,9 @@ function(input, output, session) {
       return(data.frame(Position = character(), Joueur = character()))
     }
   })
-  
+  ###############################chrono###############################
   observe({
-    invalidateLater(1000, session)
+    invalidateLater(2000, session)
     isolate({
       if(active()) {
         timer(timer()-1)
