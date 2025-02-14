@@ -25,19 +25,19 @@ fluidPage(
              h3("Mode d'emploi Administrateur"),
              p("En tant qu'administrateur, vous avez plusieurs fonctionnalités pour gérer le quiz et les joueurs :"),
              tags$ul(
-               tags$li(strong("créé une session:"),"rentrer le code admin et créer un code de session à partager au joueurs."),
+               tags$li(strong("Créer une session:"),"rentrer le code admin et créer un code de session à partager aux joueurs."),
                tags$li(strong("Télécharger votre questionnaire :"), "rentrer votre questionnaire avec vos questions préremplies. Vous pouvez obtenir un questionnaire vierge à remplir en cliquant sur le bouton ci-dessous.")
               ),
              # Bouton de téléchargement
              downloadButton("download_excel", "Télécharger un questionnaire vierge"),
              tags$ul(
-               tags$li(strong("lancer un minuteur :"), " Vous pouvez lancer un minuteur avec le temps de votre choix."),
+               tags$li(strong("Lancer un minuteur :"), " Vous pouvez lancer un minuteur avec le temps de votre choix."),
                tags$li(strong("Ajouter des questions :"), " Vous pouvez ajouter de nouvelles questions manuellement à tout moment."),
-               tags$li(strong("Démarrer le jeu :"), " Cliquez sur le bouton 'Démarrer le jeu' pour commencer le quiz."),
+               tags$li(strong("Démarrer le jeu :"), " Cliquer sur le bouton 'Démarrer le jeu' pour commencer le quiz."),
                tags$li(strong("Passer à la question suivante :"), " Vous pouvez faire défiler les questions en cliquant sur 'Question suivante'."),
                tags$li(strong("Réinitialiser les buzzers :"), " Si nécessaire, vous pouvez réinitialiser l'ordre des buzzers."),
-               tags$li(strong("Gérer les question:"), " Vous pouvez supprimer une plusieurs ou toute les questions rentré."),
-               tags$li(strong("Voir l'ordre des buzzers :"), " L'ordre d'arrivée des buzzers de chacun des joueurs est affiché après chaque question."),
+               tags$li(strong("Gérer les questions:"), " Vous pouvez supprimer une, plusieurs ou toutes les questions rentrées."),
+               tags$li(strong("Voir l'ordre des buzzers :"), " L'ordre d'arrivée des buzzers de chaque joueur est affiché après chaque question."),
                tags$li(strong("Gérer des points:"), " Vous pouvez gérer l'avancement des joueurs en ajoutant et enlevant des points."),
                tags$li(strong("Gérer les joueurs :"), " Si nécessaire, vous pouvez exclure des joueurs en les supprimant de la partie.")
              ),
@@ -48,7 +48,7 @@ fluidPage(
              p("L'interface du mode joueur est plus restrainte."),
              tags$ul(
                tags$li(strong("Inscription :"), " le joueur entre son nom dans la zone de texte, rentre le code de session donné par l’administrateur et clique sur l’icône 's’enregistrer' pour valider sa participation. Sans cette étape, il ne pourra pas utiliser le buzzer."),
-               tags$li(strong("choix du son du buzzer :"), " Le joueur peut importer un son de son choix pour son buzzer (.MP3 uniquement), sinon le son de base sera utilisé."),
+               tags$li(strong("Choix du son du buzzer :"), " Le joueur peut importer un son de son choix pour son buzzer (.MP3 uniquement), sinon le son de base sera utilisé."),
                tags$li(strong("Utilisation du buzzer :"), " Une fois la question posée par le maître du jeu, celle-ci s’affiche et le joueur peut appuyer sur le buzzer s’il connaît la réponse."),
                tags$li(strong("Priorité au plus rapide :"), " Le premier joueur à appuyer est invité à répondre."),
                tags$li(strong("Réinitialisation :"), " Seul le maître du jeu peut réinitialiser le buzzer.")
