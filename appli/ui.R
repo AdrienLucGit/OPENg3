@@ -109,7 +109,9 @@ fluidPage(
     # Onglet 3 : À propos
     tabPanel("À propos", 
              h2("À propos de notre application"),
-             p("Merci d'avoir utilisé notre application !"),
+             p("Merci d'avoir utilisé notre application ! "),
+             p("Elle a été réalisée dans le cadre du module OPEN avec l'aide de V.PAYET."),
+             p("Pour toute information complémentaire, contactez V.Payet : vpayet@isara.fr"),
              h3("Auteurs :"),
              p("- BARRET Anthony"),
              p("- BLANPAIN Chloé"),
