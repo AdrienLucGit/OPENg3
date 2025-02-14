@@ -2,8 +2,13 @@ source("global.R")
 # UI
 fluidPage(
   tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
-  ),
+    tags$link(rel = "stylesheet", type = "text/css", href = "style.css"),
+  tags$script("
+      Shiny.addCustomMessageHandler('selectTab', function(tab) {
+        $('a[data-value=\"' + tab + '\"]').tab('show');
+      });
+    ")
+),
   titlePanel(div(
     tags$img(src = "logobookisara.png", height="100px", style = "margin-right: 10px;"),
     "Buzzer by BOOKISARA")
