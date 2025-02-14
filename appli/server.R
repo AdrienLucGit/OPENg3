@@ -5,24 +5,28 @@ function(input, output, session) {
   session_data <- reactiveValues(role = NULL, player_name = NULL)
 
   ###################choix buzzer#############
-  observeEvent(input$confirm_sound, {
-    req(input$custom_sound)  
+  observeEvent(input$confirm_sound, { 
+    req(input$custom_sound)  # Vérifie que l'utilisateur a bien sélectionné un fichier avant de continuer
     
-    tryCatch({
-      tmp_file <- input$custom_sound$datapath
-      final_path <- file.path("www", "buzz.mp3")
-      file.copy(tmp_file, final_path, overwrite = TRUE)
-      runjs("document.getElementById('buzz_sound').load();")
-      output$file_name <- renderText({
-        paste("File uploaded and saved as: buzz.mp3")
+    tryCatch({  # Utilisation de tryCatch pour gérer les erreurs éventuelles
+      tmp_file <- input$custom_sound$datapath  # Récupère le chemin temporaire du fichier téléchargé
+      final_path <- file.path("www", "buzz.mp3")  # Définit l'emplacement final du fichier (dans le dossier "www")
+      
+      file.copy(tmp_file, final_path, overwrite = TRUE)  # Copie le fichier vers le nouvel emplacement en écrasant s'il existe déjà
+      
+      runjs("document.getElementById('buzz_sound').load();")  # Recharge l'élément audio sur la page pour prendre en compte le nouveau fichier
+      
+      output$file_name <- renderText({  # Met à jour un élément texte dans l'interface utilisateur
+        paste("buzz.mp3")  # Affiche un message confirmant l'enregistrement du fichier
       })
     },
-    error = function(e) {
-      output$file_name <- renderText({
-        paste("Error saving file:", e$message)
+    error = function(e) {  # Capture et gère les erreurs qui pourraient survenir
+      output$file_name <- renderText({  # Met à jour l'élément texte avec un message d'erreur
+        paste("Error saving file:", e$message)  # Affiche l'erreur rencontrée
       })
     })
   })
+  
   ##################################################
   
   
