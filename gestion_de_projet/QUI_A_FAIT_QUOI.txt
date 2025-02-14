@@ -35,6 +35,7 @@ GESTION BUZZER
 FONCTIONNALITES INTERFACE ADMIN
 > L'hôte peut distribuer les points : Marie
 > Liste des joueurs dans l'ordre : Typhaine
+> L'hôte peut faire apparaître un podium à la fin de la partie montrant les 3 meillieurs joueurs : Desmond
 
 
 ANNULE / SUPPRIME
@@ -50,4 +51,3 @@ AMELIORATIONS POSSIBLES :
 > Appliquer le thèmse sur l'onglet de choix de rôle : ADMIN / JOUEUR ; Actuellement, l'espace reste blanc
 > Ajouter le son souhaité sur le buzzer (ex : par le joueur) : Ici par défaut
 > Cacher l'onglet de connexion quand on est usr la page de jeux (ADMIN / JOUEUR)
-> Faire apparaître un podium des 3 meilleurs scores en cliquant sur un bouton de l'interface ADMIN
