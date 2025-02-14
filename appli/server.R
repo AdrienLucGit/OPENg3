@@ -166,7 +166,6 @@ function(input, output, session) {
         if(timer() < 1) {
           active(FALSE)
           
-          # Use runjs() to trigger the audio to play when the timer reaches 0
           runjs("
             var audio = document.getElementById('fin_sound');
             if (audio.paused || audio.ended) {
@@ -175,7 +174,6 @@ function(input, output, session) {
             }
           ")
           
-          # Show modal after countdown completes
           showModal(modalDialog(
             title = "Important message",
             "Countdown completed!"
