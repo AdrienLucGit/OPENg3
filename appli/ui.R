@@ -69,6 +69,8 @@ fluidPage(
                    passwordInput("admin_password_input", "Entrez le mot de passe Admin :", ""),
                    textInput("admin_session_code", "Créer un code de session :", ""),
                    actionButton("create_session", "Créer la session"),
+                   actionButton("show_podium", "Afficher le podium",
+                                style = "font-size: 12px; padding: 6px; width: 90%;"),
                    textOutput("error_message")  # Affichage du message d'erreur
                  ),
                  

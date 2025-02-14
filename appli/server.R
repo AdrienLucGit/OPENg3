@@ -406,6 +406,8 @@ function(input, output, session) {
     # Réinitialisation des buzzers
     global_buzz_list(data.frame(name = character(), time = numeric(), stringsAsFactors = FALSE))
     
+    global_scores((data.frame(name = character(0), points = numeric(0))))
+    
     # Mise à jour des sorties
     output$current_question <- renderText("")
     output$display_question <- renderText("")
