@@ -17,3 +17,4 @@ error_message <- reactiveVal("")  # Message d'erreur pour le mot de passe
 global_scores <- reactiveVal(data.frame(name = character(), points = numeric(), stringsAsFactors = FALSE))#stock le score des joueurs
 timer <- reactiveVal(10) #chrono
 active <- reactiveVal(FALSE) # chrono
+show_podium <- reactiveVal(FALSE)

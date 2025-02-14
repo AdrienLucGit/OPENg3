@@ -3,6 +3,59 @@ source("global.R")
 # Server
 function(input, output, session) {
   session_data <- reactiveValues(role = NULL, player_name = NULL)
+  
+  ##Podium
+  get_top_3_scores <- reactive({
+    scores <- global_scores()
+    if(nrow(scores) > 0) {
+      top_3 <- head(scores[order(-scores$points), ], 3)
+      return(top_3)
+    } else {
+      return(data.frame(name = character(0), points = numeric(0)))
+    }
+  })
+  
+  output$podium_content <- renderUI({
+    if(show_podium()) {
+      top_3 <- get_top_3_scores()
+      if(nrow(top_3) > 0) {
+        tagList(
+          h2("Podium", style = "text-align: center;"),
+          div(style = "display: flex; justify-content: center; align-items: flex-end; height: 300px;",
+              if(nrow(top_3) >= 2) {
+                div(style = "text-align: center; margin: 0 10px;",
+                    div(style = "background-color: silver; width: 100px; height: 180px;"),
+                    h3(top_3$name[2]),
+                    p(paste(top_3$points[2], "points"))
+                )
+              },
+              if(nrow(top_3) >= 1) {
+                div(style = "text-align: center; margin: 0 10px;",
+                    div(style = "background-color: gold; width: 100px; height: 200px;"),
+                    h3(top_3$name[1]),
+                    p(paste(top_3$points[1], "points"))
+                )
+              },
+              if(nrow(top_3) >= 3) {
+                div(style = "text-align: center; margin: 0 10px;",
+                    div(style = "background-color: #cd7f32; width: 100px; height: 160px;"),
+                    h3(top_3$name[3]),
+                    p(paste(top_3$points[3], "points"))
+                )
+              }
+          )
+        )
+      } else {
+        h3("Pas encore de scores disponibles", style = "text-align: center;")
+      }
+    }
+  })
+  
+  observeEvent(input$show_podium, {
+    show_podium(TRUE)
+    updateTabsetPanel(session, "tabsetPanel", selected = "Podium")
+    session$sendCustomMessage(type = 'selectTab', message = 'Podium')
+  })
 
   ###################choix buzzer#############
   observeEvent(input$confirm_sound, { 
@@ -477,6 +530,12 @@ function(input, output, session) {
           }
         }, ignoreInit = TRUE)  # Empêche l'exécution au démarrage
       })
+    }
+  })
+  
+  observe({
+    if(show_podium()) {
+      session$sendCustomMessage(type = 'selectTab', message = 'Podium')
     }
   })
  

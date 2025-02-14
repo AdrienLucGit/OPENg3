@@ -95,6 +95,9 @@ fluidPage(
                )
              )
     ),
+    tabPanel("Podium",
+             uiOutput("podium_content")
+    ),
     
     # Onglet 3 : À propos
     tabPanel("À propos", 
