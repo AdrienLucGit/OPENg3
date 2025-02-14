@@ -6,7 +6,7 @@ fluidPage(
   ),
   titlePanel(div(
     tags$img(src = "logobookisara.png", height="100px", style = "margin-right: 10px;"),
-    "Application Shiny avec Quiz et Buzzer")
+    "Buzzer by BOOKISARA")
   ),
   
   tabsetPanel(
@@ -25,25 +25,31 @@ fluidPage(
              h3("Mode d'emploi Administrateur"),
              p("En tant qu'administrateur, vous avez plusieurs fonctionnalités pour gérer le quiz et les joueurs :"),
              tags$ul(
-               tags$li(strong("Ajouter des questions :"), " Vous pouvez ajouter de nouvelles questions à tout moment."),
+               tags$li(strong("créé une session:"),"rentrée le code admin et créé un code de session a partager au joueurs."),
+               tags$li(strong("Télécharger votre questionnaire :"), "rentré votre questionnaire avec vos question prés remplie. Vous pouvez obtenir un questionnaire vierge à remplir en cliquant sur le bouton ci-dessous.")
+              ),
+             # Bouton de téléchargement
+             downloadButton("download_excel", "Télécharger un questionnaire vierge"),
+             tags$ul(
+               tags$li(strong("lancé un chronomètre :"), " vous pouvez lancé un chronomètre du temps que vous voulez."),
+               tags$li(strong("Ajouter des questions :"), " Vous pouvez ajouter de nouvelles questions en manuel à tout moment."),
                tags$li(strong("Démarrer le jeu :"), " Cliquez sur le bouton 'Démarrer le jeu' pour commencer le quiz."),
                tags$li(strong("Passer à la question suivante :"), " Vous pouvez faire défiler les questions en cliquant sur 'Question suivante'."),
                tags$li(strong("Réinitialiser les buzzers :"), " Si nécessaire, vous pouvez réinitialiser l'ordre des buzzers."),
+               tags$li(strong("gérer les question:"), " vous pouvez supprimer une plusieurs ou toute les questions rentré."),
                tags$li(strong("Voir l'ordre des buzzers :"), " L'ordre d'arrivée des joueurs au buzzer est affiché après chaque question."),
-               tags$li(strong("Bloquer ou exclure les buzzers :"), " Si nécessaire, vous pouvez bloquer ou exclure un buzzer."),
-               tags$li(strong("Télécharger votre questionnaire :"), " Vous pouvez obtenir un questionnaire vierge à remplir en cliquant sur le bouton ci-dessous.")
+               tags$li(strong("gestion des points:"), " vous pouvez compté l'avancement des joueurs en ajoutant et enlevant des points."),
+               tags$li(strong("gérer les joueurs :"), " Si nécessaire, vous pouvez supprimer des joueurs.")
              ),
-             
-             # Bouton de téléchargement
-             downloadButton("download_excel", "Télécharger un questionnaire vierge"),
+
              
              # Mode d'emploi Joueur 
              h3("Mode d'emploi Joueur"),
-             p("L'interface du mode joueur comprend une zone de texte pour entrer son nom, une icône ", em("s'enregistrer"), " et un bouton ", em("buzzer.")),
-             h4("Étapes"),
+             p("L'interface du mode joueur est plus restrain."),
              tags$ul(
-               tags$li(strong("Inscription :"), " Le joueur entre son nom dans la zone de texte et clique sur l’icône S’enregistrer pour valider sa participation. Sans cette étape, il ne pourra pas utiliser le buzzer."),
-               tags$li(strong("Utilisation du buzzer :"), " Une fois la question posée par le maître du jeu, le joueur peut appuyer sur le buzzer s’il connaît la réponse."),
+               tags$li(strong("Inscription :"), " Le joueur entre son nom dans la zone de texte, rentre le code de session donné par l’administrateur et clique sur l’icône S’enregistrer pour valider sa participation. Sans cette étape, il ne pourra pas utiliser le buzzer."),
+               tags$li(strong("choix du son"), " le joueurs peu importer un son de son choix pour son buzzer sinon un son et prévue de base."),
+               tags$li(strong("Utilisation du buzzer :"), " Une fois la question posée par le maître du jeu, celle ci s’affiche et le joueur peut appuyer sur le buzzer s’il connaît la réponse."),
                tags$li(strong("Priorité au plus rapide :"), " Le premier joueur à appuyer est invité à répondre."),
                tags$li(strong("Réinitialisation :"), " Seul le maître du jeu peut réinitialiser le buzzer.")
              ),
