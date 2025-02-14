@@ -1,0 +1,53 @@
+Document de présentation du : "Qui a fait quoi ?"
+
+INFORMATIONS & FORME
+> Cahier des charges : Chloé & Zoé
+> Onglet présentation : Chloé, Marie & Desmond
+> Interface de sélection Hôté / Joueur : Adib & Anthony
+> Nécessité de remplir un mot de passe (pré-établi) pour rentrer sur l'interface ADMIN : Anthony
+> CGU "Conditions Générales d'Utilisations" : Zoé 
+> Appli sous la forme de 3 onglets génériques : Typhaine
+> Organisation des boutons sur l'appli : Typhaine
+> Esthétique de l'application / Thème : Chloé
+
+
+QUESTIONS
+> Possibilités d'enregistrer les questions sur le site et de passer à une question suivante : Adib
+> Bouton de téléchargement d'un EXCEL (XLSX) préremplie : Anthony
+> Bouton pour téléverser l'EXCEL téléchargé et en afficher les questions : Anthony
+> Boutons réinitialiser le jeu, supprimer les questions, supprimer les questions sélectionnées : Typhaine
+
+
+TIMER
+> Dès qu'une personne buzz, un chrono "Temps de réponse" s'affiche (Temps modifiable par l'ADMIN) : Simon, Adib & Adrien
+
+
+GESTION BUZZER
+> Quand le buzzer est enclenché, il apparaît dans l'ordre sur l'écran "ADMIN" : Typhaine & Adrien
+> L’hôte doit pouvoir réinitialiser les buzzers : Groupe
+> L’hôte doit pouvoir exclure des joueurs : Zoé
+> Message buzzer ("Vous avez déjà buzzé ! / "Vous pouvez buzzer !") : Chloé & Anthony
+> L'ADMIN peut bloquer les buzzers : Zoé
+> Possibilité pour les joueurs d'enregistrer une voix pour le buzzer : Simon & Adib
+> Gestion du son du buzzer : Groupe
+
+
+FONCTIONNALITES INTERFACE ADMIN
+> L'hôte peut distribuer les points : Marie
+> Liste des joueurs dans l'ordre : Typhaine
+
+
+ANNULE / SUPPRIME
+> Afficher les questions dans l'ordre et numéroté : Anthony
+> Possibilité de changer la couleur du buzzer / bloquer le buzzer une fois cliqué par le joueur : Anthony
+> Ajouter des possibilités de réponses "Vrai / Faux" sur certaines questions : MARIE
+
+
+AMELIORATIONS POSSIBLES : 
+> Ajouter des possibilités de réponses "Vrai / Faux" sur certaines questions + Intervalle de réponse (date / longueur) 
+> Amélioration du timer : Lancer le chrono quand le joueur buzz (Ici c'est l'admin qui doit lancer le buzzer)
+> Réinitialiser le message "Vous pouvez buzzer" quand on clique sur "Réinitialiser BUZZER" / "Nouvelle Question"
+> Appliquer le thèmse sur l'onglet de choix de rôle : ADMIN / JOUEUR ; Actuellement, l'espace reste blanc
+> Ajouter le son souhaité sur le buzzer (ex : par le joueur) : Ici par défaut
+> Cacher l'onglet de connexion quand on est usr la page de jeux (ADMIN / JOUEUR)
+> Faire apparaître un podium des 3 meilleurs scores en cliquant sur un bouton de l'interface ADMIN

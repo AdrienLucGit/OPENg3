@@ -1,0 +1,86 @@
+---
+title: "Conditions générale d'utilisation"
+author: "Zoé Pottiau"
+date: "2025-02-12"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+  html_document:
+    code_folding: hide
+    fig_caption: true
+    number_sections: true
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(ade4)
+library(FactoMineR)
+```
+
+
+\newpage
+
+# Conditions Générale d'Utilisation de «  Buzzer »
+
+
+Dernière mise à jour : 12/02/2025
+
+Bienvenue sur   *Buzzer* , l'application de quiz ludique destinée à association étudiante « Book’isara » ! En utilisant cette application, vous acceptez les présentes Conditions d'Utilisation. Si vous n'êtes pas d'accord avec l'une de ces conditions, merci de ne pas utiliser l'application.
+
+
+## Objet de l'application
+
+ Buzzer est une application permettant aux association étudiantes d'organiser des quiz interactifs à des fins éducatives, de divertissement ou d'animation d'événements.
+
+## Accès et utilisation
+
+-	L'application est réservée aux membres des associations étudiantes.
+-	Toute utilisation à des fins commerciales ou frauduleuses est interdite.
+-	Les utilisateurs s'engagent à ne pas publier de contenu offensant, illégal ou inapproprié.
+
+## Création et gestion de compte
+
+-	L'inscription peut nécessiter la création d’un pseudonyme ou une validation par un administrateur d’association.
+-	L’utilisateur est responsable de la confidentialité de ses identifiants.
+-	Tout compte inactif pendant plus de 6 mois pourra être supprimé.
+
+## Propriété intellectuelle
+
+-	Tous les contenus, y compris les questions de quiz créées par les utilisateurs, restent la propriété de leurs auteurs.
+-	En publiant du contenu sur  Buzzer, vous accordez à l’application un droit d’utilisation non exclusif pour améliorer l’expérience utilisateur.
+
+## Responsabilité
+
+ Buzzer ne garantit pas l'exactitude des questions et réponses proposées par les utilisateurs.
+L’application ne pourra être tenue responsable en cas de perte de données, bug ou interruption de service.
+
+## Protection des données personnelles
+
+Les données collectées sont limitées à celles nécessaires au bon fonctionnement de l’application.
+Aucune donnée personnelle ne sera vendue à des tiers.
+Les utilisateurs peuvent demander la suppression de leurs données à tout moment en contactant l’équipe de support.
+
+## Modifications des conditions
+
+ Buzzer se réserve le droit de modifier ces conditions à tout moment. Les utilisateurs seront notifiés des mises à jour et devront accepter les nouvelles conditions pour continuer à utiliser l’application.
+
+## Contact
+
+Pour toute question ou réclamation, vous pouvez contacter l’équipe de  Buzzer à l’adresse suivante : bookisara@isara.fr
+
+
+
+**En utilisant  *Buzzer*, vous reconnaissez avoir lu et accepté ces Conditions d'Utilisation.**
+
+```{r, echo=FALSE,  fig.align='center', out.width="50%"}
+knitr::include_graphics("BOOKISAR.logo.png")
+```
+

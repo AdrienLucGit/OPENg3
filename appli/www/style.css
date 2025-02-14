@@ -1,0 +1,178 @@
+/* --- FOND & CORPS DE TEXTE --- */
+body {
+  background-color: #1e1a2a; /* fond */
+  color: #ffffff; /* couleur texte */
+  font-family: 'Arial', sans-serif; /* police */
+  margin: 0;
+  padding: 0;
+}
+
+/* --- TITRE --- */
+h1, h2, h3, h4 {
+  color: #d4aaff;
+    font-family: "Marker Felt", fantasy	;
+  text-align: center;
+}
+
+
+/* PERSONNALISATION ONGLETS */
+
+/* BARRE DES ONGLETS */
+.nav-tabs {
+  border-bottom: 2px solid #6a0dad !important; /* Bordures */
+}
+
+/* --- Onglets NON sélectionnés --- */
+.nav-tabs > li > a {
+  background-color: #3a2f4d !important;
+  color: #d4aaff !important; 
+  border: 1px solid #6a0dad !important;
+  font-weight: bold !important;
+}
+
+/* --- Onglets NON sélectionnés SURVOOOL --- */
+.nav-tabs > li > a:hover {
+  background-color: #4c357d !important; /* Violet plus clair */
+  color: #ffffff !important;
+}
+
+/* --- Onglet SELCTIONNE  --- */
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
+  background-color: #6a0dad !important;
+  color: #ffffff !important; 
+  border: 1px solid #6a0dad !important;
+  border-bottom-color: transparent !important;
+}
+
+/* --- PERSONNALISATION TEXTE INPUT --- */
+
+/* Style général des inputs */
+.form-control {
+  background-color: #3a2f4d !important;
+  color: #ffffff !important; 
+  border: 2px solid #6a0dad !important;
+  border-radius: 8px !important; /* Coins arrondis */
+  padding: 10px !important;
+  font-size: 16px !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+/* EFFET FOCus */
+.form-control:focus {
+  background-color: #4c357d !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 10px #6a0dad !important; 
+  color: #ffffff !important;
+}
+
+/* STYLE TITRE */
+.control-label {
+  font-weight: bold !important;
+  color: #d4aaff !important; 
+  margin-bottom: 5px !important;
+}
+
+
+
+/* --- CONTENU DES ONGLETS --- */
+.tab-content {
+  background-color: #2a233d; 
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Sidebar --- */
+.sidebar {
+  background-color: #3a2f4d; 
+  padding: 15px;
+  border-radius: 10px;
+}
+
+/* --- PERSONNALISATION actionButton --- */
+
+/* STYLE GENERAL */
+.btn {
+  background-color: #6a0dad !important; 
+  color: #ffffff !important; 
+  border: 2px solid #4c357d !important;
+  border-radius: 10px !important; /* Arrondi */
+  font-weight: bold !important;
+  padding: 10px 15px !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+/* STYLE SURVOL*/
+.btn:hover {
+  background-color: #4c357d !important; 
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  transform: scale(1.05) !important;
+}
+
+/* STYLE QD ON CLIC */
+.btn:active {
+  background-color: #3a2f4d !important; 
+  color: #d4aaff !important;
+  border-color: #6a0dad !important;
+}
+
+/* --- PERSONNALISATION BOUTONS CHOIX - Boutons Radio INLINE --- */
+
+/* CONTENEUR BOUTONS CHOIX */
+.shiny-options-group {
+  display: flex !important;
+  gap: 20px !important; /* Espace entre admin & joueur */
+}
+
+/* STYLE BOUTONS CHOIX */
+.shiny-options-group label {
+  background-color: #3a2f4d !important; 
+  color: #d4aaff !important; 
+  padding: 10px 22px !important; /* taille du bouton */
+  border-radius: 10px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease-in-out !important;
+  border: 2px solid #6a0dad !important;
+}
+
+/* STYLE SURVOOL */
+.shiny-options-group label:hover {
+  background-color: #4c357d !important; 
+  color: #ffffff !important;
+}
+
+/* STYLE SELECTION UTTON CHOIX */
+input[type="radio"]:checked + label {
+  background-color: #6a0dad !important; 
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+
+/* STYLE SELECTIONNE */
+.radio input[type="radio"]:checked + label {
+  background-color: #6a0dad !important; 
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+
+/* Centrage contenu - sidebarPanel */
+.sidebar {
+  display: flex; /* Utilise le modèle flexbox */
+  flex-direction: column; /* Aligne les éléments verticalement */
+  align-items: center; /* Centre horizontalement les éléments */
+  text-align: center; /* Centre le texte */
+}
+
+
+
+
+
+
+
+
