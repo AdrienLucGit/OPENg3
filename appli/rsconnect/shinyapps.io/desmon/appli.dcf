@@ -1,0 +1,10 @@
+name: appli
+title:
+username: desmon
+account: desmon
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13992100
+bundleId: 9799809
+url: https://desmon.shinyapps.io/appli/
+version: 1
