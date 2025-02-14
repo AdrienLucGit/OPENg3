@@ -12,7 +12,7 @@ fluidPage(
   tabsetPanel(
     # Onglet 1 : Accueil
     tabPanel("Accueil", 
-             h2("Bienvenue dans notre l'application ! 🎲 "),
+             h2("Bienvenue dans notre application ! 🎲 "),
              p("Notre application", strong(em("Buzzer💥")), 
                "est une solution simple et interactive conçue pour faciliter et dynamiser vos jeux, quiz et compétitions. 
                Elle permet aux utilisateurs d’appuyer sur un bouton virtuel pour déclencher un signal sonore, 
