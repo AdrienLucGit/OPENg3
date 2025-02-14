@@ -15,6 +15,7 @@ QUESTIONS
 > Possibilités d'enregistrer les questions sur le site et de passer à une question suivante : Adib
 > Bouton de téléchargement d'un EXCEL (XLSX) préremplie : Anthony
 > Bouton pour téléverser l'EXCEL téléchargé et en afficher les questions : Anthony
+> Boutons réinitialiser le jeu, supprimer les questions, supprimer les questions sélectionnées : Typhaine
 
 
 TIMER
